@@ -1,626 +1,866 @@
-import { useRef, useMemo, useEffect, useState } from 'react';
+import { useRef, useMemo, useState } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 
-/**
- * Procedural humanoid avatar with programmatic sign language animations.
- * No external 3D model required — perfect for hackathon MVP.
- *
- * Each sign is mapped to a function that returns target poses for body parts.
- * The avatar smoothly interpolates between poses using lerp.
- */
+/* ==================================================================
+   HAND SHAPE PRESETS
+   curl: 0 = straight, 1 = fully curled (≈90° total across 3 joints)
+   spread: radians of lateral splay
+   ================================================================== */
 
-// ==================== SIGN ANIMATION DEFINITIONS ====================
-// Each animation fn returns target rotations/positions for body parts
-// Coordinate system: x=pitch, y=yaw, z=roll
+const HAND = {
+  RELAXED: {
+    thumb:  { curl: 0.15, spread: 0.4 },
+    index:  { curl: 0.12, spread: 0.05 },
+    middle: { curl: 0.12, spread: 0 },
+    ring:   { curl: 0.12, spread: -0.05 },
+    pinky:  { curl: 0.12, spread: -0.12 },
+  },
+  FLAT: {
+    thumb:  { curl: 0, spread: 0.5 },
+    index:  { curl: 0, spread: 0.05 },
+    middle: { curl: 0, spread: 0 },
+    ring:   { curl: 0, spread: -0.05 },
+    pinky:  { curl: 0, spread: -0.1 },
+  },
+  FIST: {
+    thumb:  { curl: 0.7, spread: 0.1 },
+    index:  { curl: 1, spread: 0 },
+    middle: { curl: 1, spread: 0 },
+    ring:   { curl: 1, spread: 0 },
+    pinky:  { curl: 1, spread: 0 },
+  },
+  POINT: {
+    thumb:  { curl: 0.6, spread: 0.2 },
+    index:  { curl: 0, spread: 0 },
+    middle: { curl: 1, spread: 0 },
+    ring:   { curl: 1, spread: 0 },
+    pinky:  { curl: 1, spread: 0 },
+  },
+  C_SHAPE: {
+    thumb:  { curl: 0.35, spread: 0.6 },
+    index:  { curl: 0.5, spread: 0.04 },
+    middle: { curl: 0.55, spread: 0 },
+    ring:   { curl: 0.6, spread: -0.04 },
+    pinky:  { curl: 0.65, spread: -0.08 },
+  },
+  THUMBS_UP: {
+    thumb:  { curl: 0, spread: 0.8 },
+    index:  { curl: 1, spread: 0 },
+    middle: { curl: 1, spread: 0 },
+    ring:   { curl: 1, spread: 0 },
+    pinky:  { curl: 1, spread: 0 },
+  },
+  ILY: {
+    thumb:  { curl: 0, spread: 0.8 },
+    index:  { curl: 0, spread: 0.15 },
+    middle: { curl: 1, spread: 0 },
+    ring:   { curl: 1, spread: 0 },
+    pinky:  { curl: 0, spread: -0.2 },
+  },
+  OPEN_SPREAD: {
+    thumb:  { curl: 0, spread: 0.7 },
+    index:  { curl: 0, spread: 0.15 },
+    middle: { curl: 0, spread: 0 },
+    ring:   { curl: 0, spread: -0.15 },
+    pinky:  { curl: 0, spread: -0.3 },
+  },
+  PINCH: {
+    thumb:  { curl: 0.4, spread: 0.3 },
+    index:  { curl: 0.4, spread: 0.02 },
+    middle: { curl: 1, spread: 0 },
+    ring:   { curl: 1, spread: 0 },
+    pinky:  { curl: 1, spread: 0 },
+  },
+  CLAW: {
+    thumb:  { curl: 0.4, spread: 0.5 },
+    index:  { curl: 0.45, spread: 0.1 },
+    middle: { curl: 0.45, spread: 0 },
+    ring:   { curl: 0.45, spread: -0.1 },
+    pinky:  { curl: 0.45, spread: -0.15 },
+  },
+  HOOK: {
+    thumb:  { curl: 0.6, spread: 0.2 },
+    index:  { curl: 0, spread: 0.08 },
+    middle: { curl: 0, spread: -0.08 },
+    ring:   { curl: 1, spread: 0 },
+    pinky:  { curl: 1, spread: 0 },
+  },
+  THREE_FINGERS: {
+    thumb:  { curl: 0.6, spread: 0.2 },
+    index:  { curl: 0, spread: 0.1 },
+    middle: { curl: 0, spread: 0 },
+    ring:   { curl: 0, spread: -0.1 },
+    pinky:  { curl: 1, spread: 0 },
+  },
+  FOUR_FINGERS: {
+    thumb:  { curl: 0.7, spread: 0.1 },
+    index:  { curl: 0, spread: 0.08 },
+    middle: { curl: 0, spread: 0.02 },
+    ring:   { curl: 0, spread: -0.04 },
+    pinky:  { curl: 0, spread: -0.1 },
+  },
+};
+
+/** Dynamic hand shapes (functions of time) */
+const WAVE_FINGERS = (t) => ({
+  thumb:  { curl: 0.1, spread: 0.5 },
+  index:  { curl: Math.abs(Math.sin(t * 6)) * 0.7, spread: 0.05 },
+  middle: { curl: Math.abs(Math.sin(t * 6 + 0.3)) * 0.7, spread: 0 },
+  ring:   { curl: Math.abs(Math.sin(t * 6 + 0.6)) * 0.7, spread: -0.05 },
+  pinky:  { curl: Math.abs(Math.sin(t * 6 + 0.9)) * 0.7, spread: -0.1 },
+});
+
+/** Resolve hand shape — if it's a function, call it with t */
+const resolveHand = (h, t) => (typeof h === 'function' ? h(t) : h);
+
+/* ==================================================================
+   SIGN ANIMATIONS
+   Each key returns a pose object including arms, hand shapes, wrist,
+   head, and body. All hand shapes use the HAND preset library above.
+   ================================================================== */
 
 const SIGN_ANIMATIONS = {
   sign_bonjour: (t) => ({
-    label: 'Bonjour',
     rightUpperArm: { rotation: [-1.2, 0, -0.3 + Math.sin(t * 3) * 0.15] },
     rightLowerArm: { rotation: [-0.5, 0, 0] },
-    rightHand: { rotation: [0, 0, Math.sin(t * 4) * 0.3] },
+    rightWrist: { rotation: [0, 0, Math.sin(t * 4) * 0.3] },
+    rightHand: HAND.OPEN_SPREAD,
     leftUpperArm: { rotation: [0.2, 0, 0.1] },
     leftLowerArm: { rotation: [0, 0, 0] },
+    leftHand: HAND.RELAXED,
     head: { rotation: [0, 0, 0] },
   }),
 
   sign_au_revoir: (t) => ({
-    label: 'Au revoir',
     rightUpperArm: { rotation: [-1.4, 0, -0.5] },
     rightLowerArm: { rotation: [-0.3, 0, 0] },
-    rightHand: { rotation: [0, Math.sin(t * 6) * 0.5, 0] },
+    rightWrist: { rotation: [0, Math.sin(t * 6) * 0.5, 0] },
+    rightHand: WAVE_FINGERS,
     leftUpperArm: { rotation: [0.2, 0, 0.1] },
     leftLowerArm: { rotation: [0, 0, 0] },
+    leftHand: HAND.RELAXED,
     head: { rotation: [Math.sin(t * 2) * 0.05, 0, 0] },
   }),
 
   sign_merci: (t) => ({
-    label: 'Merci',
     rightUpperArm: { rotation: [-0.8, 0, -0.2] },
     rightLowerArm: { rotation: [-0.9, 0, 0] },
-    rightHand: { rotation: [-0.3 + Math.sin(t * 3) * 0.1, 0, 0] },
+    rightWrist: { rotation: [-0.3 + Math.sin(t * 3) * 0.1, 0, 0] },
+    rightHand: HAND.FLAT,
     leftUpperArm: { rotation: [0.2, 0, 0.1] },
     leftLowerArm: { rotation: [0, 0, 0] },
+    leftHand: HAND.RELAXED,
     head: { rotation: [0.15, 0, 0] },
   }),
 
   sign_svp: (t) => ({
-    label: "S'il vous plaît",
     rightUpperArm: { rotation: [-0.5, 0, -0.1] },
     rightLowerArm: { rotation: [-0.7, 0, 0] },
-    rightHand: { rotation: [0, 0, Math.sin(t * 2.5) * 0.2] },
+    rightWrist: { rotation: [0, 0, Math.sin(t * 2.5) * 0.2] },
+    rightHand: HAND.FLAT,
     leftUpperArm: { rotation: [0.2, 0, 0.1] },
     leftLowerArm: { rotation: [0, 0, 0] },
+    leftHand: HAND.RELAXED,
     head: { rotation: [0.1, 0, 0] },
   }),
 
   sign_oui: (t) => ({
-    label: 'Oui',
     rightUpperArm: { rotation: [-0.9, 0, -0.3] },
     rightLowerArm: { rotation: [-0.8, 0, 0] },
-    rightHand: { rotation: [Math.sin(t * 4) * 0.3, 0, 0] },
+    rightWrist: { rotation: [Math.sin(t * 4) * 0.3, 0, 0] },
+    rightHand: HAND.FIST,
     leftUpperArm: { rotation: [0.2, 0, 0.1] },
     leftLowerArm: { rotation: [0, 0, 0] },
+    leftHand: HAND.RELAXED,
     head: { rotation: [Math.sin(t * 4) * 0.15, 0, 0] },
   }),
 
   sign_non: (t) => ({
-    label: 'Non',
     rightUpperArm: { rotation: [-1.0, 0, -0.3] },
     rightLowerArm: { rotation: [-0.6, 0, 0] },
-    rightHand: { rotation: [0, 0, Math.sin(t * 5) * 0.4] },
+    rightWrist: { rotation: [0, 0, Math.sin(t * 5) * 0.4] },
+    rightHand: HAND.POINT,
     leftUpperArm: { rotation: [0.2, 0, 0.1] },
     leftLowerArm: { rotation: [0, 0, 0] },
+    leftHand: HAND.RELAXED,
     head: { rotation: [0, Math.sin(t * 4) * 0.2, 0] },
   }),
 
   sign_comment: (t) => ({
-    label: 'Comment',
     rightUpperArm: { rotation: [-0.8, 0, -0.5] },
     rightLowerArm: { rotation: [-0.4, 0, 0] },
-    rightHand: { rotation: [0, Math.sin(t * 3) * 0.3, Math.sin(t * 3) * 0.2] },
+    rightWrist: { rotation: [0, Math.sin(t * 3) * 0.3, Math.sin(t * 3) * 0.2] },
+    rightHand: HAND.OPEN_SPREAD,
     leftUpperArm: { rotation: [-0.8, 0, 0.5] },
     leftLowerArm: { rotation: [-0.4, 0, 0] },
-    leftHand: { rotation: [0, Math.sin(t * 3 + Math.PI) * 0.3, Math.sin(t * 3 + Math.PI) * 0.2] },
+    leftWrist: { rotation: [0, Math.sin(t * 3 + Math.PI) * 0.3, Math.sin(t * 3 + Math.PI) * 0.2] },
+    leftHand: HAND.OPEN_SPREAD,
     head: { rotation: [0, 0, Math.sin(t * 2) * 0.05] },
   }),
 
   sign_ca_va: (t) => ({
-    label: 'Ça va',
     rightUpperArm: { rotation: [-0.9, 0, -0.4] },
     rightLowerArm: { rotation: [-0.3, 0, 0] },
-    rightHand: { rotation: [0, 0, 0] },
+    rightHand: HAND.THUMBS_UP,
     leftUpperArm: { rotation: [0.2, 0, 0.1] },
     leftLowerArm: { rotation: [0, 0, 0] },
+    leftHand: HAND.RELAXED,
     head: { rotation: [0.1, Math.sin(t * 2) * 0.1, 0] },
   }),
 
   sign_bien: (t) => ({
-    label: 'Bien',
     rightUpperArm: { rotation: [-1.0, 0, -0.4] },
     rightLowerArm: { rotation: [-0.3, 0, 0] },
-    rightHand: { rotation: [0, 0, 0] },
+    rightHand: HAND.THUMBS_UP,
     leftUpperArm: { rotation: [0.2, 0, 0.1] },
     leftLowerArm: { rotation: [0, 0, 0] },
+    leftHand: HAND.RELAXED,
     head: { rotation: [Math.sin(t * 2) * 0.1, 0, 0] },
   }),
 
   sign_mal: (t) => ({
-    label: 'Mal',
     rightUpperArm: { rotation: [-1.0, 0, -0.4] },
     rightLowerArm: { rotation: [-0.3, 0, Math.PI] },
-    rightHand: { rotation: [0, 0, 0] },
+    rightHand: HAND.THUMBS_UP,
     leftUpperArm: { rotation: [0.2, 0, 0.1] },
     leftLowerArm: { rotation: [0, 0, 0] },
+    leftHand: HAND.RELAXED,
     head: { rotation: [-0.1, 0, Math.sin(t * 1.5) * 0.05] },
   }),
 
   sign_je: (t) => ({
-    label: 'Je / Moi',
     rightUpperArm: { rotation: [-0.4, 0, -0.1] },
     rightLowerArm: { rotation: [-1.2, 0, 0] },
-    rightHand: { rotation: [0, 0, 0] },
+    rightHand: HAND.POINT,
     leftUpperArm: { rotation: [0.2, 0, 0.1] },
     leftLowerArm: { rotation: [0, 0, 0] },
+    leftHand: HAND.RELAXED,
     head: { rotation: [0.05, 0, 0] },
   }),
 
   sign_tu: (t) => ({
-    label: 'Tu / Toi',
     rightUpperArm: { rotation: [-0.7, 0, -0.1] },
     rightLowerArm: { rotation: [-0.2, 0, 0] },
-    rightHand: { rotation: [0, 0, 0] },
+    rightHand: HAND.POINT,
     leftUpperArm: { rotation: [0.2, 0, 0.1] },
     leftLowerArm: { rotation: [0, 0, 0] },
+    leftHand: HAND.RELAXED,
     head: { rotation: [0, 0, 0] },
   }),
 
   sign_il_elle: (t) => ({
-    label: 'Il / Elle',
     rightUpperArm: { rotation: [-0.6, -0.5, -0.2] },
     rightLowerArm: { rotation: [-0.2, 0, 0] },
-    rightHand: { rotation: [0, 0, 0] },
+    rightHand: HAND.POINT,
     leftUpperArm: { rotation: [0.2, 0, 0.1] },
     leftLowerArm: { rotation: [0, 0, 0] },
+    leftHand: HAND.RELAXED,
     head: { rotation: [0, -0.2, 0] },
   }),
 
   sign_nous: (t) => ({
-    label: 'Nous',
     rightUpperArm: { rotation: [-0.5, 0, -0.2] },
     rightLowerArm: { rotation: [-0.8 + Math.sin(t * 2) * 0.2, 0, 0] },
-    rightHand: { rotation: [0, Math.sin(t * 2) * 0.2, 0] },
+    rightWrist: { rotation: [0, Math.sin(t * 2) * 0.2, 0] },
+    rightHand: HAND.POINT,
     leftUpperArm: { rotation: [0.2, 0, 0.1] },
     leftLowerArm: { rotation: [0, 0, 0] },
+    leftHand: HAND.RELAXED,
     head: { rotation: [0.05, Math.sin(t * 1.5) * 0.05, 0] },
   }),
 
   sign_nom: (t) => ({
-    label: 'Nom',
     rightUpperArm: { rotation: [-0.7, 0, -0.3] },
     rightLowerArm: { rotation: [-0.8, 0, 0] },
-    rightHand: { rotation: [Math.sin(t * 5) * 0.15, 0, 0] },
+    rightWrist: { rotation: [Math.sin(t * 5) * 0.15, 0, 0] },
+    rightHand: HAND.HOOK,
     leftUpperArm: { rotation: [-0.5, 0, 0.3] },
     leftLowerArm: { rotation: [-0.6, 0, 0] },
+    leftHand: HAND.FLAT,
     head: { rotation: [0, 0, 0] },
   }),
 
   sign_quoi: (t) => ({
-    label: 'Quoi',
     rightUpperArm: { rotation: [-0.7, 0, -0.5] },
     rightLowerArm: { rotation: [-0.3, 0, 0] },
-    rightHand: { rotation: [0, Math.sin(t * 3) * 0.2, 0] },
+    rightWrist: { rotation: [0, Math.sin(t * 3) * 0.2, 0] },
+    rightHand: HAND.OPEN_SPREAD,
     leftUpperArm: { rotation: [-0.7, 0, 0.5] },
     leftLowerArm: { rotation: [-0.3, 0, 0] },
-    leftHand: { rotation: [0, Math.sin(t * 3 + Math.PI) * 0.2, 0] },
+    leftWrist: { rotation: [0, Math.sin(t * 3 + Math.PI) * 0.2, 0] },
+    leftHand: HAND.OPEN_SPREAD,
     head: { rotation: [0, 0, Math.sin(t * 2) * 0.08] },
   }),
 
   sign_ou: (t) => ({
-    label: 'Où',
     rightUpperArm: { rotation: [-0.8, Math.sin(t * 3) * 0.3, -0.3] },
     rightLowerArm: { rotation: [-0.2, 0, 0] },
-    rightHand: { rotation: [0, 0, 0] },
+    rightHand: HAND.POINT,
     leftUpperArm: { rotation: [0.2, 0, 0.1] },
     leftLowerArm: { rotation: [0, 0, 0] },
+    leftHand: HAND.RELAXED,
     head: { rotation: [0, Math.sin(t * 2) * 0.15, 0] },
   }),
 
   sign_quand: (t) => ({
-    label: 'Quand',
     rightUpperArm: { rotation: [-0.5, 0, -0.2] },
     rightLowerArm: { rotation: [-1.0, 0, 0] },
-    rightHand: { rotation: [0, 0, Math.sin(t * 3) * 0.3] },
+    rightWrist: { rotation: [0, 0, Math.sin(t * 3) * 0.3] },
+    rightHand: HAND.POINT,
     leftUpperArm: { rotation: [-0.5, 0, 0.2] },
     leftLowerArm: { rotation: [-0.8, 0, 0] },
+    leftHand: HAND.FLAT,
     head: { rotation: [0.05, 0, 0] },
   }),
 
   sign_pourquoi: (t) => ({
-    label: 'Pourquoi',
     rightUpperArm: { rotation: [-0.5, 0, -0.1] },
     rightLowerArm: { rotation: [-1.3, 0, 0] },
-    rightHand: { rotation: [0 + Math.sin(t * 2) * 0.15, 0, 0] },
+    rightWrist: { rotation: [Math.sin(t * 2) * 0.15, 0, 0] },
+    rightHand: HAND.POINT,
     leftUpperArm: { rotation: [0.2, 0, 0.1] },
     leftLowerArm: { rotation: [0, 0, 0] },
+    leftHand: HAND.RELAXED,
     head: { rotation: [0, 0, Math.sin(t * 1.5) * 0.05] },
   }),
 
   sign_aide: (t) => ({
-    label: 'Aide',
     rightUpperArm: { rotation: [-0.6, 0, -0.2] },
     rightLowerArm: { rotation: [-0.8, 0, 0] },
-    rightHand: { rotation: [0, 0, 0] },
+    rightHand: HAND.FIST,
     leftUpperArm: { rotation: [-0.5, 0, 0.2] },
     leftLowerArm: { rotation: [-0.6, 0, 0] },
-    leftHand: { rotation: [0, 0, 0] },
+    leftHand: HAND.FLAT,
     body: { position: [0, Math.sin(t * 2) * 0.03, 0] },
     head: { rotation: [0.1, 0, 0] },
   }),
 
   sign_eau: (t) => ({
-    label: 'Eau',
     rightUpperArm: { rotation: [-0.6, 0, -0.1] },
     rightLowerArm: { rotation: [-1.2, 0, 0] },
-    rightHand: { rotation: [Math.sin(t * 3) * 0.1, 0, 0] },
+    rightWrist: { rotation: [Math.sin(t * 3) * 0.1, 0, 0] },
+    rightHand: HAND.C_SHAPE,
     leftUpperArm: { rotation: [0.2, 0, 0.1] },
     leftLowerArm: { rotation: [0, 0, 0] },
+    leftHand: HAND.RELAXED,
     head: { rotation: [-0.1, 0, 0] },
   }),
 
   sign_manger: (t) => ({
-    label: 'Manger',
     rightUpperArm: { rotation: [-0.6, 0, -0.1] },
     rightLowerArm: { rotation: [-1.3 + Math.sin(t * 4) * 0.15, 0, 0] },
-    rightHand: { rotation: [0, 0, 0] },
+    rightHand: HAND.PINCH,
     leftUpperArm: { rotation: [0.2, 0, 0.1] },
     leftLowerArm: { rotation: [0, 0, 0] },
+    leftHand: HAND.RELAXED,
     head: { rotation: [Math.sin(t * 4) * 0.03, 0, 0] },
   }),
 
   sign_dormir: (t) => ({
-    label: 'Dormir',
     rightUpperArm: { rotation: [-0.7, 0, -0.2] },
     rightLowerArm: { rotation: [-1.0, 0, 0] },
-    rightHand: { rotation: [0, 0, 0] },
+    rightHand: HAND.FLAT,
     leftUpperArm: { rotation: [-0.7, 0, 0.2] },
     leftLowerArm: { rotation: [-1.0, 0, 0] },
-    leftHand: { rotation: [0, 0, 0] },
+    leftHand: HAND.FLAT,
     head: { rotation: [0.2, 0, 0.25] },
   }),
 
   sign_toilettes: (t) => ({
-    label: 'Toilettes',
     rightUpperArm: { rotation: [-0.9, 0, -0.3] },
     rightLowerArm: { rotation: [-0.5, 0, 0] },
-    rightHand: { rotation: [0, Math.sin(t * 4) * 0.2, 0] },
+    rightWrist: { rotation: [0, Math.sin(t * 4) * 0.2, 0] },
+    rightHand: {
+      thumb:  { curl: 0, spread: 0.8 },
+      index:  { curl: 1, spread: 0 },
+      middle: { curl: 1, spread: 0 },
+      ring:   { curl: 1, spread: 0 },
+      pinky:  { curl: 0, spread: -0.2 },
+    },
     leftUpperArm: { rotation: [0.2, 0, 0.1] },
     leftLowerArm: { rotation: [0, 0, 0] },
+    leftHand: HAND.RELAXED,
     head: { rotation: [0, 0, 0] },
   }),
 
   sign_docteur: (t) => ({
-    label: 'Docteur',
     rightUpperArm: { rotation: [-0.5, 0, -0.1] },
     rightLowerArm: { rotation: [-0.9, 0, 0] },
-    rightHand: { rotation: [0, 0, Math.sin(t * 3) * 0.1] },
+    rightWrist: { rotation: [0, 0, Math.sin(t * 3) * 0.1] },
+    rightHand: HAND.HOOK,
     leftUpperArm: { rotation: [-0.6, 0, 0.2] },
     leftLowerArm: { rotation: [-0.7, 0, 0] },
+    leftHand: HAND.FLAT,
     head: { rotation: [0.1, 0, 0] },
   }),
 
   sign_douleur: (t) => ({
-    label: 'Douleur',
     rightUpperArm: { rotation: [-0.7, 0, -0.2] },
     rightLowerArm: { rotation: [-0.8, 0, 0] },
-    rightHand: { rotation: [Math.sin(t * 5) * 0.2, 0, Math.sin(t * 5) * 0.2] },
+    rightWrist: { rotation: [Math.sin(t * 5) * 0.2, 0, Math.sin(t * 5) * 0.2] },
+    rightHand: HAND.POINT,
     leftUpperArm: { rotation: [-0.7, 0, 0.2] },
     leftLowerArm: { rotation: [-0.8, 0, 0] },
-    leftHand: { rotation: [Math.sin(t * 5 + Math.PI) * 0.2, 0, Math.sin(t * 5 + Math.PI) * 0.2] },
+    leftWrist: { rotation: [Math.sin(t * 5 + Math.PI) * 0.2, 0, Math.sin(t * 5 + Math.PI) * 0.2] },
+    leftHand: HAND.POINT,
     head: { rotation: [0, 0, Math.sin(t * 3) * 0.08] },
   }),
 
   sign_aimer: (t) => ({
-    label: 'Aimer',
     rightUpperArm: { rotation: [-0.5, 0, -0.3] },
     rightLowerArm: { rotation: [-1.0, 0, 0] },
-    rightHand: { rotation: [0, 0, 0] },
+    rightHand: HAND.CLAW,
     leftUpperArm: { rotation: [-0.5, 0, 0.3] },
     leftLowerArm: { rotation: [-1.0, 0, 0] },
-    leftHand: { rotation: [0, 0, 0] },
+    leftHand: HAND.CLAW,
     body: { position: [0, Math.sin(t * 1.5) * 0.02, 0] },
     head: { rotation: [0.1, 0, 0] },
   }),
 
   sign_content: (t) => ({
-    label: 'Content',
     rightUpperArm: { rotation: [-0.4, 0, -0.1] },
     rightLowerArm: { rotation: [-0.7, 0, 0] },
-    rightHand: { rotation: [0, 0, Math.sin(t * 3) * 0.15] },
+    rightWrist: { rotation: [0, 0, Math.sin(t * 3) * 0.15] },
+    rightHand: HAND.FLAT,
     leftUpperArm: { rotation: [-0.4, 0, 0.1] },
     leftLowerArm: { rotation: [-0.7, 0, 0] },
+    leftHand: HAND.FLAT,
     body: { position: [0, Math.abs(Math.sin(t * 2)) * 0.02, 0] },
     head: { rotation: [0.1, 0, Math.sin(t * 2) * 0.05] },
   }),
 
   sign_triste: (t) => ({
-    label: 'Triste',
     rightUpperArm: { rotation: [-0.3, 0, -0.1] },
     rightLowerArm: { rotation: [-1.0, 0, 0] },
-    rightHand: { rotation: [Math.sin(t * 2) * 0.1, 0, 0] },
+    rightWrist: { rotation: [Math.sin(t * 2) * 0.1, 0, 0] },
+    rightHand: HAND.CLAW,
     leftUpperArm: { rotation: [-0.3, 0, 0.1] },
     leftLowerArm: { rotation: [-1.0, 0, 0] },
+    leftHand: HAND.CLAW,
     head: { rotation: [0.2, 0, Math.sin(t * 1.5) * 0.03] },
   }),
 
   sign_peur: (t) => ({
-    label: 'Peur',
     rightUpperArm: { rotation: [-0.8, 0, -0.5] },
     rightLowerArm: { rotation: [-0.4, 0, 0] },
-    rightHand: { rotation: [0, 0, Math.sin(t * 5) * 0.1] },
+    rightWrist: { rotation: [0, 0, Math.sin(t * 5) * 0.1] },
+    rightHand: HAND.OPEN_SPREAD,
     leftUpperArm: { rotation: [-0.8, 0, 0.5] },
     leftLowerArm: { rotation: [-0.4, 0, 0] },
-    leftHand: { rotation: [0, 0, Math.sin(t * 5 + 1) * 0.1] },
+    leftHand: HAND.OPEN_SPREAD,
     body: { position: [0, 0, Math.sin(t * 5) * 0.02] },
     head: { rotation: [-0.1, 0, 0] },
   }),
 
   sign_comprendre: (t) => ({
-    label: 'Comprendre',
     rightUpperArm: { rotation: [-0.4, 0, -0.1] },
     rightLowerArm: { rotation: [-1.3, 0, 0] },
-    rightHand: { rotation: [0, 0, t < 0.5 ? 0 : 0.2] },
+    rightWrist: { rotation: [0, 0, t % 2 < 1 ? 0 : 0.2] },
+    rightHand: HAND.POINT,
     leftUpperArm: { rotation: [0.2, 0, 0.1] },
     leftLowerArm: { rotation: [0, 0, 0] },
+    leftHand: HAND.RELAXED,
     head: { rotation: [Math.sin(t * 2) * 0.1, 0, 0] },
   }),
 
   sign_pas_comprendre: (t) => ({
-    label: 'Pas comprendre',
     rightUpperArm: { rotation: [-0.5, 0, -0.1] },
     rightLowerArm: { rotation: [-1.2, 0, 0] },
-    rightHand: { rotation: [0, Math.sin(t * 4) * 0.3, 0] },
+    rightWrist: { rotation: [0, Math.sin(t * 4) * 0.3, 0] },
+    rightHand: HAND.OPEN_SPREAD,
     leftUpperArm: { rotation: [0.2, 0, 0.1] },
     leftLowerArm: { rotation: [0, 0, 0] },
+    leftHand: HAND.RELAXED,
     head: { rotation: [0, Math.sin(t * 3) * 0.15, 0] },
   }),
 
   sign_repeter: (t) => ({
-    label: 'Répéter',
     rightUpperArm: { rotation: [-0.6, 0, -0.2] },
     rightLowerArm: { rotation: [-0.7, 0, 0] },
-    rightHand: { rotation: [0, Math.sin(t * 3) * 0.3, 0] },
+    rightWrist: { rotation: [0, Math.sin(t * 3) * 0.3, 0] },
+    rightHand: HAND.FLAT,
     leftUpperArm: { rotation: [-0.5, 0, 0.2] },
     leftLowerArm: { rotation: [-0.6, 0, 0] },
+    leftHand: HAND.FLAT,
     head: { rotation: [0.05, 0, 0] },
   }),
 
   sign_lentement: (t) => ({
-    label: 'Lentement',
     rightUpperArm: { rotation: [-0.6, 0, -0.2] },
     rightLowerArm: { rotation: [-0.5 + Math.sin(t * 1.2) * 0.1, 0, 0] },
-    rightHand: { rotation: [0, 0, 0] },
+    rightHand: HAND.FLAT,
     leftUpperArm: { rotation: [-0.5, 0, 0.2] },
     leftLowerArm: { rotation: [-0.4, 0, 0] },
+    leftHand: HAND.FLAT,
     head: { rotation: [0, 0, 0] },
   }),
 
   sign_attendre: (t) => ({
-    label: 'Attendre',
     rightUpperArm: { rotation: [-0.6, 0, -0.3] },
     rightLowerArm: { rotation: [-0.3, 0, 0] },
-    rightHand: { rotation: [Math.sin(t * 2) * 0.1, 0, 0] },
+    rightWrist: { rotation: [Math.sin(t * 2) * 0.1, 0, 0] },
+    rightHand: HAND.FLAT,
     leftUpperArm: { rotation: [-0.6, 0, 0.3] },
     leftLowerArm: { rotation: [-0.3, 0, 0] },
-    leftHand: { rotation: [Math.sin(t * 2 + Math.PI) * 0.1, 0, 0] },
+    leftHand: HAND.FLAT,
     head: { rotation: [0, 0, 0] },
   }),
 
   sign_famille: (t) => ({
-    label: 'Famille',
     rightUpperArm: { rotation: [-0.7, 0, -0.3] },
     rightLowerArm: { rotation: [-0.5, 0, 0] },
-    rightHand: { rotation: [0, 0, 0] },
+    rightHand: HAND.C_SHAPE,
     leftUpperArm: { rotation: [-0.7, 0, 0.3] },
     leftLowerArm: { rotation: [-0.5, 0, 0] },
-    leftHand: { rotation: [0, 0, 0] },
+    leftHand: HAND.C_SHAPE,
     head: { rotation: [0.05, 0, 0] },
   }),
 
   sign_pere: (t) => ({
-    label: 'Père',
     rightUpperArm: { rotation: [-0.4, 0, -0.1] },
     rightLowerArm: { rotation: [-1.3, 0, 0] },
-    rightHand: { rotation: [Math.sin(t * 2) * 0.1, 0, 0] },
+    rightWrist: { rotation: [Math.sin(t * 2) * 0.1, 0, 0] },
+    rightHand: HAND.THUMBS_UP,
     leftUpperArm: { rotation: [0.2, 0, 0.1] },
     leftLowerArm: { rotation: [0, 0, 0] },
+    leftHand: HAND.RELAXED,
     head: { rotation: [0, 0, 0] },
   }),
 
   sign_mere: (t) => ({
-    label: 'Mère',
     rightUpperArm: { rotation: [-0.3, 0, -0.1] },
     rightLowerArm: { rotation: [-1.2, 0, 0] },
-    rightHand: { rotation: [Math.sin(t * 2) * 0.1, 0, 0] },
+    rightWrist: { rotation: [Math.sin(t * 2) * 0.1, 0, 0] },
+    rightHand: HAND.THUMBS_UP,
     leftUpperArm: { rotation: [0.2, 0, 0.1] },
     leftLowerArm: { rotation: [0, 0, 0] },
+    leftHand: HAND.RELAXED,
     head: { rotation: [0.05, 0, 0] },
   }),
 
   sign_enfant: (t) => ({
-    label: 'Enfant',
     rightUpperArm: { rotation: [-0.5, 0, -0.3] },
     rightLowerArm: { rotation: [-0.6, 0, 0] },
+    rightHand: HAND.FLAT,
     leftUpperArm: { rotation: [-0.5, 0, 0.3] },
     leftLowerArm: { rotation: [-0.6, 0, 0] },
+    leftHand: HAND.FLAT,
     body: { position: [0, 0, Math.sin(t * 2) * 0.02] },
     head: { rotation: [0.1, 0, Math.sin(t * 1.5) * 0.05] },
   }),
 
   sign_ami: (t) => ({
-    label: 'Ami',
     rightUpperArm: { rotation: [-0.6, 0, -0.2] },
     rightLowerArm: { rotation: [-0.8, 0, 0] },
+    rightHand: HAND.HOOK,
     leftUpperArm: { rotation: [-0.6, 0, 0.2] },
     leftLowerArm: { rotation: [-0.8, 0, 0] },
+    leftHand: HAND.HOOK,
     head: { rotation: [0.05, 0, 0] },
   }),
 
   sign_ecole: (t) => ({
-    label: 'École',
     rightUpperArm: { rotation: [-0.6, 0, -0.2] },
     rightLowerArm: { rotation: [-0.7, 0, 0] },
-    rightHand: { rotation: [Math.sin(t * 5) * 0.2, 0, 0] },
+    rightWrist: { rotation: [Math.sin(t * 5) * 0.2, 0, 0] },
+    rightHand: HAND.FLAT,
     leftUpperArm: { rotation: [-0.6, 0, 0.2] },
     leftLowerArm: { rotation: [-0.7, 0, 0] },
-    leftHand: { rotation: [Math.sin(t * 5 + Math.PI) * 0.2, 0, 0] },
+    leftHand: HAND.FLAT,
     head: { rotation: [0, 0, 0] },
   }),
 
   sign_maison: (t) => ({
-    label: 'Maison',
     rightUpperArm: { rotation: [-1.0, 0, -0.3] },
     rightLowerArm: { rotation: [-0.5, 0, -0.4] },
+    rightHand: HAND.FLAT,
     leftUpperArm: { rotation: [-1.0, 0, 0.3] },
     leftLowerArm: { rotation: [-0.5, 0, 0.4] },
+    leftHand: HAND.FLAT,
     head: { rotation: [0, 0, 0] },
   }),
 
   sign_travail: (t) => ({
-    label: 'Travail',
     rightUpperArm: { rotation: [-0.7, 0, -0.2] },
     rightLowerArm: { rotation: [-0.6 + Math.sin(t * 4) * 0.2, 0, 0] },
+    rightHand: HAND.FIST,
     leftUpperArm: { rotation: [-0.6, 0, 0.2] },
     leftLowerArm: { rotation: [-0.5, 0, 0] },
+    leftHand: HAND.FIST,
     head: { rotation: [0.05, 0, 0] },
   }),
 
   sign_apprendre: (t) => ({
-    label: 'Apprendre',
     rightUpperArm: { rotation: [-0.5, 0, -0.1] },
     rightLowerArm: { rotation: [-1.0 + Math.sin(t * 2) * 0.2, 0, 0] },
+    rightHand: HAND.CLAW,
     leftUpperArm: { rotation: [-0.5, 0, 0.2] },
     leftLowerArm: { rotation: [-0.5, 0, 0] },
+    leftHand: HAND.FLAT,
     head: { rotation: [Math.sin(t * 1.5) * 0.05, 0, 0] },
   }),
 
   sign_aujourd_hui: (t) => ({
-    label: "Aujourd'hui",
     rightUpperArm: { rotation: [-0.6, 0, -0.3] },
     rightLowerArm: { rotation: [-0.3, 0, 0] },
+    rightHand: HAND.FLAT,
     leftUpperArm: { rotation: [-0.6, 0, 0.3] },
     leftLowerArm: { rotation: [-0.3, 0, 0] },
+    leftHand: HAND.FLAT,
     head: { rotation: [0.1, 0, 0] },
   }),
 
   sign_demain: (t) => ({
-    label: 'Demain',
     rightUpperArm: { rotation: [-0.5, 0, -0.1] },
     rightLowerArm: { rotation: [-1.1, 0, 0] },
-    rightHand: { rotation: [0, 0, t < 0.5 ? 0 : 0.3] },
+    rightWrist: { rotation: [0, 0, t % 2 < 1 ? 0 : 0.3] },
+    rightHand: HAND.THUMBS_UP,
     leftUpperArm: { rotation: [0.2, 0, 0.1] },
     leftLowerArm: { rotation: [0, 0, 0] },
+    leftHand: HAND.RELAXED,
     head: { rotation: [0, 0, 0] },
   }),
 
   sign_hier: (t) => ({
-    label: 'Hier',
     rightUpperArm: { rotation: [-0.4, 0.5, -0.1] },
     rightLowerArm: { rotation: [-0.5, 0, 0] },
+    rightHand: HAND.THUMBS_UP,
     leftUpperArm: { rotation: [0.2, 0, 0.1] },
     leftLowerArm: { rotation: [0, 0, 0] },
+    leftHand: HAND.RELAXED,
     head: { rotation: [0, 0.1, 0] },
   }),
 
   sign_argent: (t) => ({
-    label: 'Argent',
     rightUpperArm: { rotation: [-0.5, 0, -0.1] },
     rightLowerArm: { rotation: [-0.8, 0, 0] },
-    rightHand: { rotation: [0, 0, Math.sin(t * 4) * 0.2] },
+    rightWrist: { rotation: [0, 0, Math.sin(t * 4) * 0.2] },
+    rightHand: HAND.PINCH,
     leftUpperArm: { rotation: [0.2, 0, 0.1] },
     leftLowerArm: { rotation: [0, 0, 0] },
+    leftHand: HAND.RELAXED,
     head: { rotation: [0, 0, 0] },
   }),
 
   sign_telephone: (t) => ({
-    label: 'Téléphone',
     rightUpperArm: { rotation: [-0.5, 0, -0.2] },
     rightLowerArm: { rotation: [-1.3, 0, 0] },
-    rightHand: { rotation: [0.1, 0, 0] },
+    rightWrist: { rotation: [0.1, 0, 0] },
+    rightHand: {
+      thumb:  { curl: 0, spread: 0.8 },
+      index:  { curl: 1, spread: 0 },
+      middle: { curl: 1, spread: 0 },
+      ring:   { curl: 1, spread: 0 },
+      pinky:  { curl: 0, spread: -0.3 },
+    },
     leftUpperArm: { rotation: [0.2, 0, 0.1] },
     leftLowerArm: { rotation: [0, 0, 0] },
+    leftHand: HAND.RELAXED,
     head: { rotation: [0, -0.15, Math.sin(t * 2) * 0.03] },
   }),
 
   sign_excusez: (t) => ({
-    label: 'Excusez-moi',
     rightUpperArm: { rotation: [-0.4, 0, -0.1] },
     rightLowerArm: { rotation: [-0.9, 0, 0] },
-    rightHand: { rotation: [0, 0, Math.sin(t * 2) * 0.15] },
+    rightWrist: { rotation: [0, 0, Math.sin(t * 2) * 0.15] },
+    rightHand: HAND.FIST,
     leftUpperArm: { rotation: [0.2, 0, 0.1] },
     leftLowerArm: { rotation: [0, 0, 0] },
+    leftHand: HAND.RELAXED,
     head: { rotation: [0.15, 0, 0] },
   }),
 
   sign_bienvenue: (t) => ({
-    label: 'Bienvenue',
     rightUpperArm: { rotation: [-0.8, 0, -0.5 - Math.sin(t * 2) * 0.2] },
     rightLowerArm: { rotation: [-0.3, 0, 0] },
+    rightHand: HAND.OPEN_SPREAD,
     leftUpperArm: { rotation: [-0.8, 0, 0.5 + Math.sin(t * 2) * 0.2] },
     leftLowerArm: { rotation: [-0.3, 0, 0] },
+    leftHand: HAND.OPEN_SPREAD,
     head: { rotation: [0.1, 0, 0] },
   }),
 
   sign_bonsoir: (t) => ({
-    label: 'Bonsoir',
     rightUpperArm: { rotation: [-1.0, 0, -0.3 + Math.sin(t * 2) * 0.1] },
     rightLowerArm: { rotation: [-0.5, 0, 0] },
-    rightHand: { rotation: [0.3, 0, 0] },
+    rightWrist: { rotation: [0.3, 0, 0] },
+    rightHand: HAND.FLAT,
     leftUpperArm: { rotation: [0.2, 0, 0.1] },
     leftLowerArm: { rotation: [0, 0, 0] },
+    leftHand: HAND.RELAXED,
     head: { rotation: [0.1, 0, 0] },
   }),
 };
 
-// Idle animation
+/** Default idle animation with subtle breathing */
 const IDLE_POSE = (t) => ({
   rightUpperArm: { rotation: [0.2, 0, 0.1] },
   rightLowerArm: { rotation: [0, 0, 0] },
-  rightHand: { rotation: [0, 0, 0] },
+  rightHand: HAND.RELAXED,
   leftUpperArm: { rotation: [0.2, 0, 0.1] },
   leftLowerArm: { rotation: [0, 0, 0] },
-  leftHand: { rotation: [0, 0, 0] },
+  leftHand: HAND.RELAXED,
   head: { rotation: [Math.sin(t * 0.5) * 0.02, Math.sin(t * 0.3) * 0.02, 0] },
   body: { position: [0, Math.sin(t * 0.8) * 0.005, 0] },
 });
 
-// ==================== MATERIALS ====================
+/* ==================================================================
+   COLORS
+   ================================================================== */
+const SKIN = '#d4a574';
+const SKIN_DARK = '#c49464';
+const SHIRT = '#2563eb';
+const PANTS = '#1e293b';
+const HAIR = '#2d1b0e';
+const EYE_COL = '#1a1a2e';
 
-const SKIN_COLOR = '#d4a574';
-const SKIN_COLOR_DARK = '#c49464';
-const SHIRT_COLOR = '#2563eb';
-const PANTS_COLOR = '#1e293b';
-const HAIR_COLOR = '#2d1b0e';
-const EYE_COLOR = '#1a1a2e';
+/* ==================================================================
+   PROCEDURAL FINGER COMPONENT
+   3 capsule segments per finger with independent curl + spread
+   ================================================================== */
 
-// ==================== AVATAR COMPONENT ====================
+function Finger({ length = [0.028, 0.022, 0.018], radius = 0.008, curl = 0, spread = 0, material, side = 1 }) {
+  const c = curl * (Math.PI / 2);
+  const j1 = c * 0.33;
+  const j2 = c * 0.37;
+  const j3 = c * 0.30;
+
+  return (
+    <group rotation={[0, 0, spread * side]}>
+      <group rotation={[j1, 0, 0]}>
+        <mesh position={[0, -length[0] / 2, 0]} material={material} castShadow>
+          <capsuleGeometry args={[radius, length[0], 3, 6]} />
+        </mesh>
+        <group position={[0, -length[0], 0]} rotation={[j2, 0, 0]}>
+          <mesh position={[0, -length[1] / 2, 0]} material={material} castShadow>
+            <capsuleGeometry args={[radius * 0.9, length[1], 3, 6]} />
+          </mesh>
+          <group position={[0, -length[1], 0]} rotation={[j3, 0, 0]}>
+            <mesh position={[0, -length[2] / 2, 0]} material={material} castShadow>
+              <capsuleGeometry args={[radius * 0.8, length[2], 3, 6]} />
+            </mesh>
+          </group>
+        </group>
+      </group>
+    </group>
+  );
+}
+
+function ThumbFinger({ length = [0.022, 0.018, 0.015], radius = 0.009, curl = 0, spread = 0, material, side = 1 }) {
+  const c = curl * (Math.PI / 2);
+  const j1 = c * 0.3;
+  const j2 = c * 0.35;
+  const j3 = c * 0.35;
+
+  return (
+    <group rotation={[0.2, spread * side * 0.7, spread * side]}>
+      <group rotation={[j1, 0, 0]}>
+        <mesh position={[0, -length[0] / 2, 0]} material={material} castShadow>
+          <capsuleGeometry args={[radius, length[0], 3, 6]} />
+        </mesh>
+        <group position={[0, -length[0], 0]} rotation={[j2, 0, 0]}>
+          <mesh position={[0, -length[1] / 2, 0]} material={material} castShadow>
+            <capsuleGeometry args={[radius * 0.85, length[1], 3, 6]} />
+          </mesh>
+          <group position={[0, -length[1], 0]} rotation={[j3, 0, 0]}>
+            <mesh position={[0, -length[2] / 2, 0]} material={material} castShadow>
+              <capsuleGeometry args={[radius * 0.75, length[2], 3, 6]} />
+            </mesh>
+          </group>
+        </group>
+      </group>
+    </group>
+  );
+}
+
+/* ==================================================================
+   ARTICULATED HAND COMPONENT
+   Palm + 5 fingers (thumb, index, middle, ring, pinky)
+   ================================================================== */
+
+function ArticulatedHand({ handShape, material, side = 1, wristRotation = [0, 0, 0] }) {
+  const h = handShape || HAND.RELAXED;
+
+  return (
+    <group rotation={wristRotation}>
+      {/* Palm */}
+      <mesh material={material} castShadow>
+        <boxGeometry args={[0.07, 0.09, 0.025]} />
+      </mesh>
+
+      {/* Thumb */}
+      <group position={[side * 0.035, -0.01, 0.008]}>
+        <ThumbFinger curl={h.thumb.curl} spread={h.thumb.spread} material={material} side={side} />
+      </group>
+
+      {/* Index */}
+      <group position={[side * 0.024, -0.048, 0]}>
+        <Finger length={[0.028, 0.022, 0.018]} radius={0.007} curl={h.index.curl} spread={h.index.spread} material={material} side={side} />
+      </group>
+
+      {/* Middle */}
+      <group position={[side * 0.008, -0.05, 0]}>
+        <Finger length={[0.032, 0.024, 0.019]} radius={0.007} curl={h.middle.curl} spread={h.middle.spread} material={material} side={side} />
+      </group>
+
+      {/* Ring */}
+      <group position={[-side * 0.008, -0.048, 0]}>
+        <Finger length={[0.029, 0.022, 0.017]} radius={0.0065} curl={h.ring.curl} spread={h.ring.spread} material={material} side={side} />
+      </group>
+
+      {/* Pinky */}
+      <group position={[-side * 0.024, -0.043, 0]}>
+        <Finger length={[0.022, 0.017, 0.014]} radius={0.006} curl={h.pinky.curl} spread={h.pinky.spread} material={material} side={side} />
+      </group>
+    </group>
+  );
+}
+
+/* ==================================================================
+   MAIN AVATAR COMPONENT
+   Drop-in replacement — same interface: currentSign, isAnimating
+   ================================================================== */
 
 function AvatarModel({ currentSign, isAnimating }) {
   const groupRef = useRef();
   const timeRef = useRef(0);
-  const lerpSpeed = 5;
 
-  // Refs for all animated parts
-  const headRef = useRef();
+  // Body part refs for smooth lerp
   const bodyRef = useRef();
-  const rightUpperArmRef = useRef();
-  const rightLowerArmRef = useRef();
-  const rightHandRef = useRef();
-  const leftUpperArmRef = useRef();
-  const leftLowerArmRef = useRef();
-  const leftHandRef = useRef();
+  const headRef = useRef();
+  const rUpperArmRef = useRef();
+  const rLowerArmRef = useRef();
+  const lUpperArmRef = useRef();
+  const lLowerArmRef = useRef();
 
-  // Materials
-  const skinMaterial = useMemo(
-    () => new THREE.MeshStandardMaterial({ color: SKIN_COLOR, roughness: 0.7 }),
-    []
-  );
-  const skinDarkMaterial = useMemo(
-    () => new THREE.MeshStandardMaterial({ color: SKIN_COLOR_DARK, roughness: 0.8 }),
-    []
-  );
-  const shirtMaterial = useMemo(
-    () => new THREE.MeshStandardMaterial({ color: SHIRT_COLOR, roughness: 0.6 }),
-    []
-  );
-  const pantsMaterial = useMemo(
-    () => new THREE.MeshStandardMaterial({ color: PANTS_COLOR, roughness: 0.7 }),
-    []
-  );
-  const hairMaterial = useMemo(
-    () => new THREE.MeshStandardMaterial({ color: HAIR_COLOR, roughness: 0.9 }),
-    []
-  );
-  const eyeMaterial = useMemo(
-    () => new THREE.MeshStandardMaterial({ color: EYE_COLOR }),
-    []
-  );
-  const whiteMaterial = useMemo(
-    () => new THREE.MeshStandardMaterial({ color: '#ffffff', roughness: 0.3 }),
-    []
-  );
-  const mouthMaterial = useMemo(
-    () => new THREE.MeshStandardMaterial({ color: '#8b4a4a', roughness: 0.5 }),
-    []
-  );
+  // Interpolated hand states
+  const rHandRef = useRef({ ...HAND.RELAXED });
+  const lHandRef = useRef({ ...HAND.RELAXED });
+  const rWristRef = useRef([0, 0, 0]);
+  const lWristRef = useRef([0, 0, 0]);
 
-  // Animation frame
+  // Trigger re-render each frame so Hand components pick up interpolated values
+  const [, setFrame] = useState(0);
+
+  // Materials (memoised — created once)
+  const skinMat = useMemo(() => new THREE.MeshStandardMaterial({ color: SKIN, roughness: 0.7 }), []);
+  const skinDarkMat = useMemo(() => new THREE.MeshStandardMaterial({ color: SKIN_DARK, roughness: 0.8 }), []);
+  const shirtMat = useMemo(() => new THREE.MeshStandardMaterial({ color: SHIRT, roughness: 0.6 }), []);
+  const pantsMat = useMemo(() => new THREE.MeshStandardMaterial({ color: PANTS, roughness: 0.7 }), []);
+  const hairMat = useMemo(() => new THREE.MeshStandardMaterial({ color: HAIR, roughness: 0.9 }), []);
+  const eyeMat = useMemo(() => new THREE.MeshStandardMaterial({ color: EYE_COL }), []);
+  const whiteMat = useMemo(() => new THREE.MeshStandardMaterial({ color: '#ffffff', roughness: 0.3 }), []);
+  const mouthMat = useMemo(() => new THREE.MeshStandardMaterial({ color: '#8b4a4a', roughness: 0.5 }), []);
+
+  const LERP_SPEED = 5;
+
   useFrame((_, delta) => {
     timeRef.current += delta;
     const t = timeRef.current;
+    const lr = LERP_SPEED * delta;
 
-    // Get target pose
+    // Determine animation function
     const animFn =
       currentSign && SIGN_ANIMATIONS[currentSign.animation]
         ? SIGN_ANIMATIONS[currentSign.animation]
@@ -628,206 +868,209 @@ function AvatarModel({ currentSign, isAnimating }) {
 
     const pose = animFn(t);
 
-    // Smoothly lerp each body part toward target
-    const lerpPart = (ref, poseData, defaultRot = [0, 0, 0]) => {
-      if (!ref.current || !poseData) return;
-      const target = poseData.rotation || defaultRot;
-      ref.current.rotation.x = THREE.MathUtils.lerp(
-        ref.current.rotation.x,
-        target[0],
-        lerpSpeed * delta
-      );
-      ref.current.rotation.y = THREE.MathUtils.lerp(
-        ref.current.rotation.y,
-        target[1],
-        lerpSpeed * delta
-      );
-      ref.current.rotation.z = THREE.MathUtils.lerp(
-        ref.current.rotation.z,
-        target[2],
-        lerpSpeed * delta
-      );
+    // --- Lerp body part rotations ---
+    const lerpRot = (ref, target) => {
+      if (!ref.current) return;
+      const r = target?.rotation || [0, 0, 0];
+      ref.current.rotation.x = THREE.MathUtils.lerp(ref.current.rotation.x, r[0], lr);
+      ref.current.rotation.y = THREE.MathUtils.lerp(ref.current.rotation.y, r[1], lr);
+      ref.current.rotation.z = THREE.MathUtils.lerp(ref.current.rotation.z, r[2], lr);
     };
 
-    lerpPart(headRef, pose.head);
-    lerpPart(
-      rightUpperArmRef,
-      pose.rightUpperArm || { rotation: [0.2, 0, 0.1] }
-    );
-    lerpPart(rightLowerArmRef, pose.rightLowerArm);
-    lerpPart(rightHandRef, pose.rightHand);
-    lerpPart(
-      leftUpperArmRef,
-      pose.leftUpperArm || { rotation: [0.2, 0, 0.1] }
-    );
-    lerpPart(leftLowerArmRef, pose.leftLowerArm);
-    lerpPart(leftHandRef, pose.leftHand);
+    lerpRot(headRef, pose.head);
+    lerpRot(rUpperArmRef, pose.rightUpperArm || { rotation: [0.2, 0, 0.1] });
+    lerpRot(rLowerArmRef, pose.rightLowerArm);
+    lerpRot(lUpperArmRef, pose.leftUpperArm || { rotation: [0.2, 0, 0.1] });
+    lerpRot(lLowerArmRef, pose.leftLowerArm);
 
-    // Body position (breathing/movement)
-    if (bodyRef.current && pose.body?.position) {
-      const targetY = pose.body.position[1] || 0;
-      bodyRef.current.position.y = THREE.MathUtils.lerp(
-        bodyRef.current.position.y,
-        targetY,
-        lerpSpeed * delta
-      );
+    // Body subtle movement
+    if (bodyRef.current) {
+      const by = pose.body?.position?.[1] ?? 0;
+      bodyRef.current.position.y = THREE.MathUtils.lerp(bodyRef.current.position.y, by, lr);
     }
+
+    // --- Lerp hand shapes (per-finger curl + spread) ---
+    const lerpHand = (stateRef, target) => {
+      const tgt = resolveHand(target, t) || HAND.RELAXED;
+      const cur = stateRef.current;
+      const out = {};
+      for (const f of ['thumb', 'index', 'middle', 'ring', 'pinky']) {
+        out[f] = {
+          curl: THREE.MathUtils.lerp(cur[f]?.curl ?? 0.1, tgt[f]?.curl ?? 0.1, lr),
+          spread: THREE.MathUtils.lerp(cur[f]?.spread ?? 0, tgt[f]?.spread ?? 0, lr),
+        };
+      }
+      stateRef.current = out;
+    };
+
+    lerpHand(rHandRef, pose.rightHand);
+    lerpHand(lHandRef, pose.leftHand);
+
+    // --- Lerp wrist rotation ---
+    const lerpWrist = (stateRef, target) => {
+      const r = target?.rotation || [0, 0, 0];
+      stateRef.current = stateRef.current.map((v, i) => THREE.MathUtils.lerp(v, r[i], lr));
+    };
+    lerpWrist(rWristRef, pose.rightWrist);
+    lerpWrist(lWristRef, pose.leftWrist);
+
+    // Force React re-render so Hand components get updated values
+    setFrame((f) => f + 1);
   });
 
+  // Read current interpolated values for render
+  const rH = rHandRef.current;
+  const lH = lHandRef.current;
+
   return (
-    <group ref={groupRef} position={[0, 0, 0]}>
+    <group ref={groupRef}>
       <group ref={bodyRef}>
-        {/* ===== TORSO ===== */}
-        {/* Upper body (shirt) */}
-        <mesh position={[0, 1.05, 0]} material={shirtMaterial} castShadow>
+
+        {/* ========== TORSO ========== */}
+        <mesh position={[0, 1.05, 0]} material={shirtMat} castShadow>
           <boxGeometry args={[0.55, 0.55, 0.3]} />
         </mesh>
-        {/* Lower body (pants waist) */}
-        <mesh position={[0, 0.72, 0]} material={pantsMaterial} castShadow>
+        {/* Belt / waist */}
+        <mesh position={[0, 0.72, 0]} material={pantsMat} castShadow>
           <boxGeometry args={[0.5, 0.15, 0.28]} />
         </mesh>
 
-        {/* ===== NECK ===== */}
-        <mesh position={[0, 1.38, 0]} material={skinMaterial} castShadow>
+        {/* ========== NECK ========== */}
+        <mesh position={[0, 1.38, 0]} material={skinMat} castShadow>
           <cylinderGeometry args={[0.07, 0.08, 0.08, 8]} />
         </mesh>
 
-        {/* ===== HEAD ===== */}
+        {/* ========== HEAD ========== */}
         <group ref={headRef} position={[0, 1.55, 0]}>
-          {/* Head sphere */}
-          <mesh material={skinMaterial} castShadow>
+          <mesh material={skinMat} castShadow>
             <sphereGeometry args={[0.18, 16, 16]} />
           </mesh>
           {/* Hair */}
-          <mesh position={[0, 0.06, -0.02]} material={hairMaterial} castShadow>
+          <mesh position={[0, 0.06, -0.02]} material={hairMat} castShadow>
             <sphereGeometry args={[0.185, 16, 16, 0, Math.PI * 2, 0, Math.PI * 0.55]} />
           </mesh>
-          {/* Eyes */}
-          <mesh position={[-0.065, 0.02, 0.155]} material={whiteMaterial}>
+          {/* Eyebrows */}
+          <mesh position={[-0.065, 0.055, 0.155]} material={hairMat}>
+            <boxGeometry args={[0.04, 0.008, 0.01]} />
+          </mesh>
+          <mesh position={[0.065, 0.055, 0.155]} material={hairMat}>
+            <boxGeometry args={[0.04, 0.008, 0.01]} />
+          </mesh>
+          {/* Eye whites */}
+          <mesh position={[-0.065, 0.02, 0.155]} material={whiteMat}>
             <sphereGeometry args={[0.03, 8, 8]} />
           </mesh>
-          <mesh position={[0.065, 0.02, 0.155]} material={whiteMaterial}>
+          <mesh position={[0.065, 0.02, 0.155]} material={whiteMat}>
             <sphereGeometry args={[0.03, 8, 8]} />
           </mesh>
           {/* Pupils */}
-          <mesh position={[-0.065, 0.02, 0.175]} material={eyeMaterial}>
+          <mesh position={[-0.065, 0.02, 0.175]} material={eyeMat}>
             <sphereGeometry args={[0.015, 8, 8]} />
           </mesh>
-          <mesh position={[0.065, 0.02, 0.175]} material={eyeMaterial}>
+          <mesh position={[0.065, 0.02, 0.175]} material={eyeMat}>
             <sphereGeometry args={[0.015, 8, 8]} />
           </mesh>
           {/* Nose */}
-          <mesh position={[0, -0.02, 0.17]} material={skinDarkMaterial}>
+          <mesh position={[0, -0.02, 0.17]} material={skinDarkMat}>
             <sphereGeometry args={[0.02, 8, 8]} />
           </mesh>
           {/* Mouth */}
-          <mesh position={[0, -0.065, 0.16]} material={mouthMaterial}>
+          <mesh position={[0, -0.065, 0.16]} material={mouthMat}>
             <boxGeometry args={[0.06, 0.012, 0.02]} />
           </mesh>
           {/* Ears */}
-          <mesh position={[-0.18, 0, 0]} material={skinMaterial}>
+          <mesh position={[-0.18, 0, 0]} material={skinMat}>
             <sphereGeometry args={[0.035, 8, 8]} />
           </mesh>
-          <mesh position={[0.18, 0, 0]} material={skinMaterial}>
+          <mesh position={[0.18, 0, 0]} material={skinMat}>
             <sphereGeometry args={[0.035, 8, 8]} />
           </mesh>
         </group>
 
-        {/* ===== RIGHT ARM ===== */}
+        {/* ========== RIGHT ARM ========== */}
         <group position={[-0.35, 1.2, 0]}>
-          {/* Shoulder */}
-          <mesh material={shirtMaterial} castShadow>
+          {/* Shoulder joint */}
+          <mesh material={shirtMat} castShadow>
             <sphereGeometry args={[0.065, 8, 8]} />
           </mesh>
-          <group ref={rightUpperArmRef}>
+          <group ref={rUpperArmRef}>
             {/* Upper arm */}
-            <mesh position={[0, -0.15, 0]} material={shirtMaterial} castShadow>
+            <mesh position={[0, -0.15, 0]} material={shirtMat} castShadow>
               <capsuleGeometry args={[0.05, 0.2, 4, 8]} />
             </mesh>
-            {/* Elbow */}
             <group position={[0, -0.3, 0]}>
-              <mesh material={skinMaterial}>
+              {/* Elbow joint */}
+              <mesh material={skinMat}>
                 <sphereGeometry args={[0.04, 8, 8]} />
               </mesh>
-              <group ref={rightLowerArmRef}>
-                {/* Lower arm */}
-                <mesh position={[0, -0.14, 0]} material={skinMaterial} castShadow>
+              <group ref={rLowerArmRef}>
+                {/* Forearm */}
+                <mesh position={[0, -0.14, 0]} material={skinMat} castShadow>
                   <capsuleGeometry args={[0.04, 0.18, 4, 8]} />
                 </mesh>
-                {/* Hand */}
-                <group ref={rightHandRef} position={[0, -0.3, 0]}>
-                  <mesh material={skinMaterial} castShadow>
-                    <boxGeometry args={[0.08, 0.1, 0.04]} />
-                  </mesh>
-                  {/* Fingers hint */}
-                  <mesh position={[0, -0.07, 0]} material={skinDarkMaterial}>
-                    <boxGeometry args={[0.07, 0.04, 0.035]} />
-                  </mesh>
+                {/* ARTICULATED RIGHT HAND */}
+                <group position={[0, -0.28, 0]}>
+                  <ArticulatedHand handShape={rH} material={skinMat} side={-1} wristRotation={rWristRef.current} />
                 </group>
               </group>
             </group>
           </group>
         </group>
 
-        {/* ===== LEFT ARM ===== */}
+        {/* ========== LEFT ARM ========== */}
         <group position={[0.35, 1.2, 0]}>
-          <mesh material={shirtMaterial} castShadow>
+          <mesh material={shirtMat} castShadow>
             <sphereGeometry args={[0.065, 8, 8]} />
           </mesh>
-          <group ref={leftUpperArmRef}>
-            <mesh position={[0, -0.15, 0]} material={shirtMaterial} castShadow>
+          <group ref={lUpperArmRef}>
+            <mesh position={[0, -0.15, 0]} material={shirtMat} castShadow>
               <capsuleGeometry args={[0.05, 0.2, 4, 8]} />
             </mesh>
             <group position={[0, -0.3, 0]}>
-              <mesh material={skinMaterial}>
+              <mesh material={skinMat}>
                 <sphereGeometry args={[0.04, 8, 8]} />
               </mesh>
-              <group ref={leftLowerArmRef}>
-                <mesh position={[0, -0.14, 0]} material={skinMaterial} castShadow>
+              <group ref={lLowerArmRef}>
+                <mesh position={[0, -0.14, 0]} material={skinMat} castShadow>
                   <capsuleGeometry args={[0.04, 0.18, 4, 8]} />
                 </mesh>
-                <group ref={leftHandRef} position={[0, -0.3, 0]}>
-                  <mesh material={skinMaterial} castShadow>
-                    <boxGeometry args={[0.08, 0.1, 0.04]} />
-                  </mesh>
-                  <mesh position={[0, -0.07, 0]} material={skinDarkMaterial}>
-                    <boxGeometry args={[0.07, 0.04, 0.035]} />
-                  </mesh>
+                {/* ARTICULATED LEFT HAND */}
+                <group position={[0, -0.28, 0]}>
+                  <ArticulatedHand handShape={lH} material={skinMat} side={1} wristRotation={lWristRef.current} />
                 </group>
               </group>
             </group>
           </group>
         </group>
 
-        {/* ===== LEGS ===== */}
-        {/* Right leg */}
+        {/* ========== RIGHT LEG ========== */}
         <group position={[-0.13, 0.62, 0]}>
-          <mesh position={[0, -0.2, 0]} material={pantsMaterial} castShadow>
+          <mesh position={[0, -0.2, 0]} material={pantsMat} castShadow>
             <capsuleGeometry args={[0.06, 0.28, 4, 8]} />
           </mesh>
-          <mesh position={[0, -0.5, 0]} material={pantsMaterial} castShadow>
+          <mesh position={[0, -0.5, 0]} material={pantsMat} castShadow>
             <capsuleGeometry args={[0.055, 0.25, 4, 8]} />
           </mesh>
           {/* Shoe */}
-          <mesh position={[0, -0.72, 0.03]} material={eyeMaterial} castShadow>
+          <mesh position={[0, -0.72, 0.03]} material={eyeMat} castShadow>
             <boxGeometry args={[0.1, 0.06, 0.16]} />
           </mesh>
         </group>
 
-        {/* Left leg */}
+        {/* ========== LEFT LEG ========== */}
         <group position={[0.13, 0.62, 0]}>
-          <mesh position={[0, -0.2, 0]} material={pantsMaterial} castShadow>
+          <mesh position={[0, -0.2, 0]} material={pantsMat} castShadow>
             <capsuleGeometry args={[0.06, 0.28, 4, 8]} />
           </mesh>
-          <mesh position={[0, -0.5, 0]} material={pantsMaterial} castShadow>
+          <mesh position={[0, -0.5, 0]} material={pantsMat} castShadow>
             <capsuleGeometry args={[0.055, 0.25, 4, 8]} />
           </mesh>
-          <mesh position={[0, -0.72, 0.03]} material={eyeMaterial} castShadow>
+          <mesh position={[0, -0.72, 0.03]} material={eyeMat} castShadow>
             <boxGeometry args={[0.1, 0.06, 0.16]} />
           </mesh>
         </group>
 
-        {/* ===== GROUND PLANE (invisible) ===== */}
+        {/* Invisible ground for shadows */}
         <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.1, 0]} receiveShadow>
           <planeGeometry args={[5, 5]} />
           <meshStandardMaterial transparent opacity={0} />
