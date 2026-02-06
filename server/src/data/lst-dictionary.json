@@ -1,0 +1,536 @@
+{
+  "metadata": {
+    "language": "Tunisian Sign Language (LST)",
+    "version": "1.0.0",
+    "lastUpdated": "2026-02-06",
+    "description": "Dictionary mapping French/Arabic words to LST sign animations. Validated by AVST experts."
+  },
+  "signs": [
+    {
+      "id": "sign_bonjour",
+      "words": ["bonjour", "salut", "مرحبا", "اهلا"],
+      "animation": "sign_bonjour",
+      "category": "greetings",
+      "duration": 1.5,
+      "description": "Right hand raised to forehead, then moved outward",
+      "difficulty": "easy"
+    },
+    {
+      "id": "sign_bonsoir",
+      "words": ["bonsoir", "مساء الخير"],
+      "animation": "sign_bonsoir",
+      "category": "greetings",
+      "duration": 1.5,
+      "description": "Similar to bonjour with downward arc motion",
+      "difficulty": "easy"
+    },
+    {
+      "id": "sign_au_revoir",
+      "words": ["au revoir", "à bientôt", "bye", "بالسلامة"],
+      "animation": "sign_au_revoir",
+      "category": "greetings",
+      "duration": 1.8,
+      "description": "Hand waving motion",
+      "difficulty": "easy"
+    },
+    {
+      "id": "sign_merci",
+      "words": ["merci", "شكرا", "شكراً"],
+      "animation": "sign_merci",
+      "category": "politeness",
+      "duration": 1.2,
+      "description": "Flat hand from chin moving outward",
+      "difficulty": "easy"
+    },
+    {
+      "id": "sign_sil_vous_plait",
+      "words": ["s'il vous plaît", "svp", "من فضلك", "عافاك"],
+      "animation": "sign_svp",
+      "category": "politeness",
+      "duration": 1.5,
+      "description": "Circular motion on chest with flat hand",
+      "difficulty": "easy"
+    },
+    {
+      "id": "sign_oui",
+      "words": ["oui", "نعم", "ايه", "أيه"],
+      "animation": "sign_oui",
+      "category": "basics",
+      "duration": 0.8,
+      "description": "Head nod with fist moving down",
+      "difficulty": "easy"
+    },
+    {
+      "id": "sign_non",
+      "words": ["non", "لا"],
+      "animation": "sign_non",
+      "category": "basics",
+      "duration": 0.8,
+      "description": "Head shake with index finger wagging",
+      "difficulty": "easy"
+    },
+    {
+      "id": "sign_comment",
+      "words": ["comment", "كيفاش", "كيف"],
+      "animation": "sign_comment",
+      "category": "questions",
+      "duration": 1.2,
+      "description": "Both palms up, rotating outward",
+      "difficulty": "easy"
+    },
+    {
+      "id": "sign_ca_va",
+      "words": ["ça va", "comment ça va", "لاباس", "كيفك"],
+      "animation": "sign_ca_va",
+      "category": "greetings",
+      "duration": 1.5,
+      "description": "Thumbs up with questioning expression",
+      "difficulty": "easy"
+    },
+    {
+      "id": "sign_bien",
+      "words": ["bien", "bon", "مليح", "باهي"],
+      "animation": "sign_bien",
+      "category": "basics",
+      "duration": 1.0,
+      "description": "Thumbs up gesture",
+      "difficulty": "easy"
+    },
+    {
+      "id": "sign_mal",
+      "words": ["mal", "mauvais", "خايب"],
+      "animation": "sign_mal",
+      "category": "basics",
+      "duration": 1.0,
+      "description": "Thumbs down gesture",
+      "difficulty": "easy"
+    },
+    {
+      "id": "sign_je",
+      "words": ["je", "moi", "أنا", "انا"],
+      "animation": "sign_je",
+      "category": "pronouns",
+      "duration": 0.8,
+      "description": "Index finger pointing to chest",
+      "difficulty": "easy"
+    },
+    {
+      "id": "sign_tu",
+      "words": ["tu", "toi", "vous", "أنت", "انت", "انتي"],
+      "animation": "sign_tu",
+      "category": "pronouns",
+      "duration": 0.8,
+      "description": "Index finger pointing forward",
+      "difficulty": "easy"
+    },
+    {
+      "id": "sign_il_elle",
+      "words": ["il", "elle", "lui", "هو", "هي"],
+      "animation": "sign_il_elle",
+      "category": "pronouns",
+      "duration": 0.8,
+      "description": "Index finger pointing to the side",
+      "difficulty": "easy"
+    },
+    {
+      "id": "sign_nous",
+      "words": ["nous", "on", "احنا", "إحنا"],
+      "animation": "sign_nous",
+      "category": "pronouns",
+      "duration": 1.0,
+      "description": "Index finger circling to include self and others",
+      "difficulty": "easy"
+    },
+    {
+      "id": "sign_nom",
+      "words": ["nom", "اسم", "إسم"],
+      "animation": "sign_nom",
+      "category": "basics",
+      "duration": 1.2,
+      "description": "Two fingers tapping on opposite palm",
+      "difficulty": "easy"
+    },
+    {
+      "id": "sign_quoi",
+      "words": ["quoi", "que", "qu'est-ce que", "شنو", "شنوة", "آش"],
+      "animation": "sign_quoi",
+      "category": "questions",
+      "duration": 1.0,
+      "description": "Palms up, shoulders shrugged",
+      "difficulty": "easy"
+    },
+    {
+      "id": "sign_ou",
+      "words": ["où", "ou", "وين", "فين"],
+      "animation": "sign_ou",
+      "category": "questions",
+      "duration": 1.0,
+      "description": "Index finger pointing in different directions",
+      "difficulty": "easy"
+    },
+    {
+      "id": "sign_quand",
+      "words": ["quand", "وقتاش", "إمتى"],
+      "animation": "sign_quand",
+      "category": "questions",
+      "duration": 1.2,
+      "description": "Index finger circling wrist (watch gesture)",
+      "difficulty": "easy"
+    },
+    {
+      "id": "sign_pourquoi",
+      "words": ["pourquoi", "علاش", "ليش"],
+      "animation": "sign_pourquoi",
+      "category": "questions",
+      "duration": 1.2,
+      "description": "Index finger touching forehead then pointing out",
+      "difficulty": "easy"
+    },
+    {
+      "id": "sign_aide",
+      "words": ["aide", "aider", "help", "عاوني", "مساعدة"],
+      "animation": "sign_aide",
+      "category": "needs",
+      "duration": 1.5,
+      "description": "Fist on open palm lifting upward",
+      "difficulty": "easy"
+    },
+    {
+      "id": "sign_eau",
+      "words": ["eau", "ماء", "ما"],
+      "animation": "sign_eau",
+      "category": "needs",
+      "duration": 1.2,
+      "description": "W-shape hand near mouth",
+      "difficulty": "easy"
+    },
+    {
+      "id": "sign_manger",
+      "words": ["manger", "nourriture", "ناكل", "ماكلة", "أكل"],
+      "animation": "sign_manger",
+      "category": "needs",
+      "duration": 1.5,
+      "description": "Grouped fingers moving to mouth repeatedly",
+      "difficulty": "easy"
+    },
+    {
+      "id": "sign_dormir",
+      "words": ["dormir", "sommeil", "نرقد", "نوم"],
+      "animation": "sign_dormir",
+      "category": "needs",
+      "duration": 1.5,
+      "description": "Palms together beside tilted head",
+      "difficulty": "easy"
+    },
+    {
+      "id": "sign_toilettes",
+      "words": ["toilettes", "wc", "حمام", "تواليت"],
+      "animation": "sign_toilettes",
+      "category": "needs",
+      "duration": 1.2,
+      "description": "T-shape hand shaken slightly",
+      "difficulty": "easy"
+    },
+    {
+      "id": "sign_docteur",
+      "words": ["docteur", "médecin", "hôpital", "طبيب", "سبيطار"],
+      "animation": "sign_docteur",
+      "category": "needs",
+      "duration": 1.5,
+      "description": "Two fingers on inner wrist (pulse check gesture)",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_douleur",
+      "words": ["douleur", "mal", "ça fait mal", "يوجعني", "وجع"],
+      "animation": "sign_douleur",
+      "category": "needs",
+      "duration": 1.5,
+      "description": "Both index fingers pointing toward each other, twisting",
+      "difficulty": "easy"
+    },
+    {
+      "id": "sign_famille",
+      "words": ["famille", "عائلة", "فاميليا"],
+      "animation": "sign_famille",
+      "category": "people",
+      "duration": 1.5,
+      "description": "Both hands forming circle from F-handshape",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_pere",
+      "words": ["père", "papa", "بابا", "أب"],
+      "animation": "sign_pere",
+      "category": "people",
+      "duration": 1.2,
+      "description": "Thumb on forehead",
+      "difficulty": "easy"
+    },
+    {
+      "id": "sign_mere",
+      "words": ["mère", "maman", "ماما", "أم"],
+      "animation": "sign_mere",
+      "category": "people",
+      "duration": 1.2,
+      "description": "Thumb on chin",
+      "difficulty": "easy"
+    },
+    {
+      "id": "sign_enfant",
+      "words": ["enfant", "bébé", "طفل", "صغير"],
+      "animation": "sign_enfant",
+      "category": "people",
+      "duration": 1.2,
+      "description": "Cradling arms motion",
+      "difficulty": "easy"
+    },
+    {
+      "id": "sign_ami",
+      "words": ["ami", "copain", "صاحبي", "صديق"],
+      "animation": "sign_ami",
+      "category": "people",
+      "duration": 1.2,
+      "description": "Interlocking index fingers",
+      "difficulty": "easy"
+    },
+    {
+      "id": "sign_ecole",
+      "words": ["école", "مدرسة", "مكتب"],
+      "animation": "sign_ecole",
+      "category": "places",
+      "duration": 1.5,
+      "description": "Clapping motion (teacher clapping for attention)",
+      "difficulty": "easy"
+    },
+    {
+      "id": "sign_maison",
+      "words": ["maison", "دار", "بيت"],
+      "animation": "sign_maison",
+      "category": "places",
+      "duration": 1.5,
+      "description": "Fingertips meeting forming roof shape",
+      "difficulty": "easy"
+    },
+    {
+      "id": "sign_travail",
+      "words": ["travail", "travailler", "خدمة", "نخدم"],
+      "animation": "sign_travail",
+      "category": "actions",
+      "duration": 1.5,
+      "description": "Fists alternating up and down (hammering)",
+      "difficulty": "easy"
+    },
+    {
+      "id": "sign_apprendre",
+      "words": ["apprendre", "étudier", "نقرا", "دراسة"],
+      "animation": "sign_apprendre",
+      "category": "actions",
+      "duration": 1.5,
+      "description": "Hand picking from open book to forehead",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_aimer",
+      "words": ["aimer", "amour", "j'aime", "نحب", "حب"],
+      "animation": "sign_aimer",
+      "category": "emotions",
+      "duration": 1.5,
+      "description": "Crossed hands over heart",
+      "difficulty": "easy"
+    },
+    {
+      "id": "sign_content",
+      "words": ["content", "heureux", "joie", "فرحان", "مبسوط"],
+      "animation": "sign_content",
+      "category": "emotions",
+      "duration": 1.5,
+      "description": "Both flat hands circling on chest upward",
+      "difficulty": "easy"
+    },
+    {
+      "id": "sign_triste",
+      "words": ["triste", "حزين", "مقلق"],
+      "animation": "sign_triste",
+      "category": "emotions",
+      "duration": 1.5,
+      "description": "Fingers tracing tears down cheeks",
+      "difficulty": "easy"
+    },
+    {
+      "id": "sign_peur",
+      "words": ["peur", "effrayé", "خايف", "خوف"],
+      "animation": "sign_peur",
+      "category": "emotions",
+      "duration": 1.5,
+      "description": "Both hands open pushing away from chest",
+      "difficulty": "easy"
+    },
+    {
+      "id": "sign_comprendre",
+      "words": ["comprendre", "je comprends", "فهمت", "نفهم"],
+      "animation": "sign_comprendre",
+      "category": "communication",
+      "duration": 1.2,
+      "description": "Finger snap near temple",
+      "difficulty": "easy"
+    },
+    {
+      "id": "sign_pas_comprendre",
+      "words": ["pas comprendre", "je ne comprends pas", "مافهمتش", "ما نفهمش"],
+      "animation": "sign_pas_comprendre",
+      "category": "communication",
+      "duration": 1.5,
+      "description": "Hand waving across forehead",
+      "difficulty": "easy"
+    },
+    {
+      "id": "sign_repeter",
+      "words": ["répéter", "encore", "عاود", "إعادة"],
+      "animation": "sign_repeter",
+      "category": "communication",
+      "duration": 1.2,
+      "description": "Circular hand motion",
+      "difficulty": "easy"
+    },
+    {
+      "id": "sign_lentement",
+      "words": ["lentement", "doucement", "بالشوية", "شوية"],
+      "animation": "sign_lentement",
+      "category": "communication",
+      "duration": 1.5,
+      "description": "Flat hand slowly dragging over other hand",
+      "difficulty": "easy"
+    },
+    {
+      "id": "sign_attendre",
+      "words": ["attendre", "patience", "أستنى", "صبر"],
+      "animation": "sign_attendre",
+      "category": "actions",
+      "duration": 1.5,
+      "description": "Both hands palms down, patting air downward",
+      "difficulty": "easy"
+    },
+    {
+      "id": "sign_aujourd_hui",
+      "words": ["aujourd'hui", "اليوم", "اليوما"],
+      "animation": "sign_aujourd_hui",
+      "category": "time",
+      "duration": 1.2,
+      "description": "Both hands palms down pointing at ground",
+      "difficulty": "easy"
+    },
+    {
+      "id": "sign_demain",
+      "words": ["demain", "غدوة", "باكر"],
+      "animation": "sign_demain",
+      "category": "time",
+      "duration": 1.2,
+      "description": "Thumb on cheek flipping forward",
+      "difficulty": "easy"
+    },
+    {
+      "id": "sign_hier",
+      "words": ["hier", "البارح", "أمس"],
+      "animation": "sign_hier",
+      "category": "time",
+      "duration": 1.2,
+      "description": "Thumb pointing backward over shoulder",
+      "difficulty": "easy"
+    },
+    {
+      "id": "sign_argent",
+      "words": ["argent", "prix", "فلوس", "ثمن", "مال"],
+      "animation": "sign_argent",
+      "category": "basics",
+      "duration": 1.2,
+      "description": "Rubbing thumb against fingers",
+      "difficulty": "easy"
+    },
+    {
+      "id": "sign_telephone",
+      "words": ["téléphone", "appeler", "تيليفون", "يتصل"],
+      "animation": "sign_telephone",
+      "category": "objects",
+      "duration": 1.2,
+      "description": "Y-hand shape held to ear",
+      "difficulty": "easy"
+    },
+    {
+      "id": "sign_excusez",
+      "words": ["excusez-moi", "pardon", "désolé", "سامحني", "معليش"],
+      "animation": "sign_excusez",
+      "category": "politeness",
+      "duration": 1.5,
+      "description": "Fist circling on chest",
+      "difficulty": "easy"
+    },
+    {
+      "id": "sign_bienvenue",
+      "words": ["bienvenue", "مرحبا بيك"],
+      "animation": "sign_bienvenue",
+      "category": "greetings",
+      "duration": 1.8,
+      "description": "Both hands opening outward from center",
+      "difficulty": "easy"
+    }
+  ],
+  "phrases": [
+    {
+      "id": "phrase_comment_tu_appelles",
+      "phrase": "comment tu t'appelles",
+      "alternates": ["c'est quoi ton nom", "شنو إسمك", "كيفاش إسمك"],
+      "signs": ["sign_tu", "sign_nom", "sign_quoi"],
+      "duration": 3.0,
+      "description": "YOU + NAME + WHAT"
+    },
+    {
+      "id": "phrase_je_t_aime",
+      "phrase": "je t'aime",
+      "alternates": ["نحبك"],
+      "signs": ["sign_je", "sign_aimer", "sign_tu"],
+      "duration": 3.0,
+      "description": "I + LOVE + YOU"
+    },
+    {
+      "id": "phrase_j_ai_besoin_aide",
+      "phrase": "j'ai besoin d'aide",
+      "alternates": ["aide-moi", "عاوني", "نحتاج مساعدة"],
+      "signs": ["sign_je", "sign_aide"],
+      "duration": 2.5,
+      "description": "I + HELP"
+    },
+    {
+      "id": "phrase_ca_va_bien",
+      "phrase": "ça va bien",
+      "alternates": ["je vais bien", "لاباس الحمد لله", "أنا باهي"],
+      "signs": ["sign_ca_va", "sign_bien"],
+      "duration": 2.5,
+      "description": "HOW-ARE-YOU + GOOD"
+    },
+    {
+      "id": "phrase_ou_est",
+      "phrase": "où est",
+      "alternates": ["وين", "فين هو"],
+      "signs": ["sign_ou"],
+      "duration": 1.5,
+      "description": "WHERE"
+    },
+    {
+      "id": "phrase_j_ai_faim",
+      "phrase": "j'ai faim",
+      "alternates": ["فيا الجوع", "جوعان"],
+      "signs": ["sign_je", "sign_manger"],
+      "duration": 2.5,
+      "description": "I + EAT"
+    },
+    {
+      "id": "phrase_j_ai_soif",
+      "phrase": "j'ai soif",
+      "alternates": ["فيا العطش", "عطشان"],
+      "signs": ["sign_je", "sign_eau"],
+      "duration": 2.5,
+      "description": "I + WATER"
+    }
+  ]
+}
