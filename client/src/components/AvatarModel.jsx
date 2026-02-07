@@ -2,6 +2,7 @@ import { useRef, useEffect, useMemo, useCallback } from 'react';
 import { useFrame, useGraph } from '@react-three/fiber';
 import { useGLTF, useAnimations } from '@react-three/drei';
 import * as THREE from 'three';
+import * as SkeletonUtils from 'three/addons/utils/SkeletonUtils.js';
 
 /* ══════════════════════════════════════════════════════════════════
    CONFIG
@@ -632,14 +633,18 @@ const SIGN_POSES = {
 
 /** Default resting pose — subtle idle breathing */
 const IDLE_SIGN_POSE = (t) => ({
-  rightArm: [0.08, 0, 0.05],
-  rightForeArm: [-0.05, 0, 0],
+  rightArm: [0.08 + Math.sin(t * 1) * 0.03, 0, 0.05],
+  rightForeArm: [-0.05 + Math.sin(t * 0.7) * 0.02, 0, 0],
   rightHandShape: HAND.RELAXED,
-  leftArm: [0.08, 0, -0.05],
-  leftForeArm: [-0.05, 0, 0],
+  leftArm: [0.08 + Math.sin(t * 1.2) * 0.03, 0, -0.05],
+  leftForeArm: [-0.05 + Math.sin(t * 0.9) * 0.02, 0, 0],
   leftHandShape: HAND.RELAXED,
-  head: [Math.sin(t * 0.5) * 0.02, Math.sin(t * 0.3) * 0.02, 0],
-  spine2: [Math.sin(t * 0.8) * 0.005, 0, 0],
+  head: [
+    Math.sin(t * 0.5) * 0.05,  // Increased amplitude
+    Math.sin(t * 0.3) * 0.04,  // Increased amplitude
+    0
+  ],
+  spine2: [Math.sin(t * 0.8) * 0.01, 0, 0],  // Slightly increased
 });
 
 /* ══════════════════════════════════════════════════════════════════
@@ -666,11 +671,15 @@ class AnimationStateMachine {
       this.actions[clip.name] = action;
     });
 
+    console.log('🎬 AnimationStateMachine: Initialized with', clips.length, 'clips');
+    console.log('  Clips:', clips.map(c => c.name).slice(0, 5), '...');
+
     // Auto-play 'Idle' clip if it exists in the GLB
     if (this.actions['Idle']) {
       this.actions['Idle'].setEffectiveWeight(1);
       this.actions['Idle'].play();
       this.currentAction = this.actions['Idle'];
+      console.log('▶️ AnimationStateMachine: Playing Idle clip');
     }
   }
 
@@ -761,6 +770,8 @@ function applyHandShape(bones, side, handShape, lr) {
    ══════════════════════════════════════════════════════════════════ */
 
 function applyProceduralPose(bones, pose, lr) {
+  if (!bones || Object.keys(bones).length === 0) return;
+
   // Arm bones
   const armPairs = [
     ['rightArm',     'RightArm'],
@@ -806,25 +817,117 @@ function applyProceduralPose(bones, pose, lr) {
    Props: currentSign, isAnimating  (same interface as before)
    ══════════════════════════════════════════════════════════════════ */
 
+/* Helper: find a bone by trying multiple naming conventions */
+function findBone(map, baseName) {
+  // Try exact match first
+  if (map[baseName]) return map[baseName];
+  // Try common prefixes from Mixamo / RPM exports
+  const prefixes = ['mixamorig:', 'mixamorig_', 'Armature_', 'Wolf3D_', ''];
+  for (const prefix of prefixes) {
+    const key = prefix + baseName;
+    if (map[key]) return map[key];
+  }
+  return null;
+}
+
+/* Build a normalized bone map (short name → bone object) */
+function buildNormalizedBoneMap(rawMap) {
+  const EXPECTED = [
+    'Hips', 'Spine', 'Spine1', 'Spine2', 'Neck', 'Head',
+    'LeftShoulder', 'LeftArm', 'LeftForeArm', 'LeftHand',
+    'RightShoulder', 'RightArm', 'RightForeArm', 'RightHand',
+    'LeftUpLeg', 'LeftLeg', 'LeftFoot', 'LeftToeBase',
+    'RightUpLeg', 'RightLeg', 'RightFoot', 'RightToeBase',
+  ];
+  // Finger bones
+  const sides = ['Left', 'Right'];
+  const fingers = ['Thumb', 'Index', 'Middle', 'Ring', 'Little'];
+  for (const side of sides) {
+    for (const finger of fingers) {
+      for (let i = 1; i <= 3; i++) {
+        EXPECTED.push(`${side}Hand${finger}${i}`);
+      }
+    }
+  }
+
+  const normalized = {};
+  for (const name of EXPECTED) {
+    const bone = findBone(rawMap, name);
+    if (bone) normalized[name] = bone;
+  }
+  return normalized;
+}
+
 function AvatarModel({ currentSign, isAnimating }) {
   const groupRef = useRef();
   const timeRef = useRef(0);
   const prevSignRef = useRef(null);
   const smRef = useRef(new AnimationStateMachine());
+  const boneWarningsRef = useRef(new Set());
 
   // ── Load GLB model ──
   const { scene, animations } = useGLTF(MODEL_URL);
-  const clonedScene = useMemo(() => scene.clone(true), [scene]);
+
+  // ── Clone with SkeletonUtils for proper skinned-mesh support ──
+  const clonedScene = useMemo(() => {
+    try {
+      const clone = SkeletonUtils.clone(scene);
+      console.log('✅ Scene cloned with SkeletonUtils');
+      return clone;
+    } catch (e) {
+      console.warn('⚠️ SkeletonUtils.clone failed, falling back to scene.clone:', e);
+      return scene.clone(true);
+    }
+  }, [scene]);
 
   // ── Build bone lookup table ──
   const bones = useMemo(() => {
-    const map = {};
+    // Step 1: Collect ALL bone-like objects
+    const rawMap = {};
     clonedScene.traverse((obj) => {
       if (obj.isBone) {
-        map[obj.name] = obj;
+        rawMap[obj.name] = obj;
       }
     });
-    return map;
+
+    // Step 2: Also grab from skeleton bindings
+    if (Object.keys(rawMap).length === 0) {
+      clonedScene.traverse((obj) => {
+        if (obj.isSkinnedMesh && obj.skeleton) {
+          obj.skeleton.bones.forEach((bone) => {
+            rawMap[bone.name] = bone;
+          });
+        }
+      });
+    }
+
+    console.log(`🦴 Raw bones found: ${Object.keys(rawMap).length}`);
+    if (Object.keys(rawMap).length > 0) {
+      console.log('   Names:', Object.keys(rawMap).join(', '));
+    } else {
+      // Full scene dump for debugging
+      console.error('❌ NO BONES FOUND in model!');
+      clonedScene.traverse((obj) => {
+        console.log(`  ${obj.type}: "${obj.name}"`,
+          obj.isBone ? '[BONE]' : '',
+          obj.isSkinnedMesh ? '[SKINNED]' : '');
+      });
+    }
+
+    // Step 3: Normalize names
+    const normalized = buildNormalizedBoneMap(rawMap);
+    console.log(`🦴 Normalized bones mapped: ${Object.keys(normalized).length}`);
+    console.log('   Mapped:', Object.keys(normalized).join(', '));
+
+    // Expose to window for debugging
+    window.__avatarBones = {
+      rawCount: Object.keys(rawMap).length,
+      rawNames: Object.keys(rawMap),
+      normalizedCount: Object.keys(normalized).length,
+      normalizedNames: Object.keys(normalized),
+    };
+
+    return normalized;
   }, [clonedScene]);
 
   // ── Animation mixer from GLB clips ──
@@ -842,9 +945,7 @@ function AvatarModel({ currentSign, isAnimating }) {
       if (obj.isMesh) {
         obj.castShadow = true;
         obj.receiveShadow = true;
-        if (obj.material) {
-          obj.material.needsUpdate = true;
-        }
+        if (obj.material) obj.material.needsUpdate = true;
       }
     });
   }, [clonedScene]);
@@ -854,14 +955,17 @@ function AvatarModel({ currentSign, isAnimating }) {
     const sm = smRef.current;
     const animKey = currentSign?.animation;
 
-    if (!animKey || animKey === prevSignRef.current) return;
+    if (!animKey) return;
+
+    // Reset time for each new sign so animations start from t=0
+    timeRef.current = 0;
     prevSignRef.current = animKey;
 
-    // If we have a pre-baked clip for this sign, play it
+    console.log('🎬 Sign changed →', animKey, '| hasPose:', !!SIGN_POSES[animKey]);
+
     if (sm.hasClip(animKey)) {
       sm.transitionTo(animKey);
     }
-    // Otherwise the useFrame loop will apply the procedural pose
   }, [currentSign]);
 
   // Return to idle when no sign
@@ -876,7 +980,7 @@ function AvatarModel({ currentSign, isAnimating }) {
   useFrame((_, delta) => {
     timeRef.current += delta;
     const t = timeRef.current;
-    const lr = LERP_SPEED * delta;
+    const lr = Math.min(1, LERP_SPEED * delta);   // clamp to avoid overshoot
     const sm = smRef.current;
 
     // Tick the clip mixer
@@ -887,17 +991,15 @@ function AvatarModel({ currentSign, isAnimating }) {
     const poseFn = animKey && SIGN_POSES[animKey] ? SIGN_POSES[animKey] : IDLE_SIGN_POSE;
     const pose = poseFn(t);
 
-    // If no clip is playing for this sign, apply procedural bone control
+    // Always apply procedural bone control (unless a clip perfectly covers it)
     const clipPlaying = animKey && sm.hasClip(animKey);
     if (!clipPlaying) {
-      // Resolve dynamic hand shapes
       const resolved = { ...pose };
       if (resolved.rightHandShape) resolved.rightHandShape = resolveHand(resolved.rightHandShape, t);
       if (resolved.leftHandShape)  resolved.leftHandShape  = resolveHand(resolved.leftHandShape, t);
-
       applyProceduralPose(bones, resolved, lr);
     } else {
-      // Even with a clip, still apply finger shapes procedurally (clips rarely have finger data)
+      // Even with a clip, still apply finger shapes procedurally
       const resolved = { ...pose };
       if (resolved.rightHandShape) {
         applyHandShape(bones, 'right', resolveHand(resolved.rightHandShape, t), lr);

@@ -31,6 +31,9 @@ function AvatarScene({ currentSign, isAnimating }) {
           camera={{ position: [0, 1.4, 2.8], fov: 40 }}
           shadows
           gl={{ antialias: true, alpha: true }}
+          onCreated={({ gl }) => {
+            console.log('✅ Three.js Canvas created', gl.info);
+          }}
         >
           {/* Lighting */}
           <ambientLight intensity={0.7} />

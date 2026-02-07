@@ -1,0 +1,76 @@
+.debug-panel {
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  background: rgba(0, 0, 0, 0.9);
+  color: #0f0;
+  padding: 12px;
+  border-radius: 6px;
+  font-family: 'Courier New', monospace;
+  font-size: 11px;
+  max-width: 400px;
+  max-height: 300px;
+  overflow-y: auto;
+  z-index: 9999;
+  border: 1px solid #0f0;
+}
+
+.debug-panel h3 {
+  margin: 0 0 8px 0;
+  color: #0f0;
+  font-size: 13px;
+}
+
+.debug-panel h4 {
+  margin: 8px 0 4px 0;
+  color: #0f0;
+  font-size: 11px;
+}
+
+.debug-info {
+  background: rgba(0, 30, 0, 0.5);
+  padding: 8px;
+  border-radius: 4px;
+  margin-bottom: 8px;
+  border-left: 2px solid #0f0;
+}
+
+.debug-info div {
+  margin: 2px 0;
+  color: #0f0;
+}
+
+.debug-logs {
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.log-entry {
+  padding: 2px 0;
+  border-bottom: 1px solid #0f055;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.log-time {
+  color: #0a0;
+  margin-right: 6px;
+}
+
+.log-sign {
+  color: #0f0;
+  font-weight: bold;
+  margin-right: 4px;
+}
+
+.log-anim {
+  color: #0d0;
+  font-size: 10px;
+  margin-right: 4px;
+}
+
+.log-index {
+  color: #0b0;
+  font-size: 10px;
+}
