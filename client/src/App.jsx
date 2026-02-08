@@ -4,8 +4,7 @@ import SpeechInput from './components/SpeechInput';
 import AvatarScene from './components/AvatarScene';
 import TranslationDisplay from './components/TranslationDisplay';
 import SignDictionary from './components/SignDictionary';
-import DebugPanel from './components/DebugPanel';
-import ConnectionTest from './components/ConnectionTest';
+import AnimationTester from './components/AnimationTester';
 import { translateText } from './services/api';
 import './App.css';
 
@@ -20,7 +19,6 @@ function App() {
   const handleTranslate = useCallback(async (text) => {
     if (!text.trim()) return;
 
-    console.log('📝 App: Translating text -', text);
     setError(null);
     setIsTranslating(true);
     setCurrentSignIndex(-1);
@@ -28,12 +26,10 @@ function App() {
 
     try {
       const result = await translateText(text);
-      console.log('✅ App: Translation result -', result);
       setTranslationResult(result);
 
       // Start animation sequence if there are signs
       if (result.signs && result.signs.length > 0) {
-        console.log('🎬 App: Starting animation sequence with', result.signs.length, 'signs');
         setIsAnimating(true);
         playSignSequence(result.signs);
       }
@@ -51,16 +47,13 @@ function App() {
 
     const playNext = () => {
       if (index >= signs.length) {
-        console.log('✨ App: Animation sequence complete');
         setCurrentSignIndex(-1);
         setIsAnimating(false);
         return;
       }
 
-      const sign = signs[index];
-      console.log(`📍 App: Playing sign ${index + 1}/${signs.length} -`, sign.word, `(${sign.animation})`);
       setCurrentSignIndex(index);
-      const duration = (sign.duration || 1.5) * 1000;
+      const duration = (signs[index].duration || 1.5) * 1000;
 
       index++;
       setTimeout(playNext, duration);
@@ -84,9 +77,6 @@ function App() {
   return (
     <div className="app">
       <Header onToggleDictionary={() => setShowDictionary(!showDictionary)} />
-
-      {/* Connection Test */}
-      <ConnectionTest />
 
       <main className="app-main">
         <div className="app-layout">
@@ -143,13 +133,8 @@ function App() {
         <SignDictionary onClose={() => setShowDictionary(false)} />
       )}
 
-      {/* Debug Panel */}
-      <DebugPanel
-        currentSign={currentSign}
-        currentSignIndex={currentSignIndex}
-        isAnimating={isAnimating}
-        translationResult={translationResult}
-      />
+      {/* Animation Tester */}
+      <AnimationTester />
     </div>
   );
 }

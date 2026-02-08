@@ -8,7 +8,12 @@
   "signs": [
     {
       "id": "sign_bonjour",
-      "words": ["bonjour", "salut", "مرحبا", "اهلا"],
+      "words": [
+        "bonjour",
+        "salut",
+        "مرحبا",
+        "اهلا"
+      ],
       "animation": "sign_bonjour",
       "category": "greetings",
       "duration": 1.5,
@@ -17,7 +22,10 @@
     },
     {
       "id": "sign_bonsoir",
-      "words": ["bonsoir", "مساء الخير"],
+      "words": [
+        "bonsoir",
+        "مساء الخير"
+      ],
       "animation": "sign_bonsoir",
       "category": "greetings",
       "duration": 1.5,
@@ -26,7 +34,12 @@
     },
     {
       "id": "sign_au_revoir",
-      "words": ["au revoir", "à bientôt", "bye", "بالسلامة"],
+      "words": [
+        "au revoir",
+        "à bientôt",
+        "bye",
+        "بالسلامة"
+      ],
       "animation": "sign_au_revoir",
       "category": "greetings",
       "duration": 1.8,
@@ -35,7 +48,11 @@
     },
     {
       "id": "sign_merci",
-      "words": ["merci", "شكرا", "شكراً"],
+      "words": [
+        "merci",
+        "شكرا",
+        "شكراً"
+      ],
       "animation": "sign_merci",
       "category": "politeness",
       "duration": 1.2,
@@ -44,7 +61,12 @@
     },
     {
       "id": "sign_sil_vous_plait",
-      "words": ["s'il vous plaît", "svp", "من فضلك", "عافاك"],
+      "words": [
+        "s'il vous plaît",
+        "svp",
+        "من فضلك",
+        "عافاك"
+      ],
       "animation": "sign_svp",
       "category": "politeness",
       "duration": 1.5,
@@ -53,7 +75,12 @@
     },
     {
       "id": "sign_oui",
-      "words": ["oui", "نعم", "ايه", "أيه"],
+      "words": [
+        "oui",
+        "نعم",
+        "ايه",
+        "أيه"
+      ],
       "animation": "sign_oui",
       "category": "basics",
       "duration": 0.8,
@@ -62,7 +89,10 @@
     },
     {
       "id": "sign_non",
-      "words": ["non", "لا"],
+      "words": [
+        "non",
+        "لا"
+      ],
       "animation": "sign_non",
       "category": "basics",
       "duration": 0.8,
@@ -71,7 +101,11 @@
     },
     {
       "id": "sign_comment",
-      "words": ["comment", "كيفاش", "كيف"],
+      "words": [
+        "comment",
+        "كيفاش",
+        "كيف"
+      ],
       "animation": "sign_comment",
       "category": "questions",
       "duration": 1.2,
@@ -80,7 +114,12 @@
     },
     {
       "id": "sign_ca_va",
-      "words": ["ça va", "comment ça va", "لاباس", "كيفك"],
+      "words": [
+        "ça va",
+        "comment ça va",
+        "لاباس",
+        "كيفك"
+      ],
       "animation": "sign_ca_va",
       "category": "greetings",
       "duration": 1.5,
@@ -89,25 +128,39 @@
     },
     {
       "id": "sign_bien",
-      "words": ["bien", "bon", "مليح", "باهي"],
+      "words": [
+        "bien",
+        "bon",
+        "مليح",
+        "باهي"
+      ],
       "animation": "sign_bien",
       "category": "basics",
-      "duration": 1.0,
+      "duration": 1,
       "description": "Thumbs up gesture",
       "difficulty": "easy"
     },
     {
       "id": "sign_mal",
-      "words": ["mal", "mauvais", "خايب"],
+      "words": [
+        "mal",
+        "mauvais",
+        "خايب"
+      ],
       "animation": "sign_mal",
       "category": "basics",
-      "duration": 1.0,
+      "duration": 1,
       "description": "Thumbs down gesture",
       "difficulty": "easy"
     },
     {
       "id": "sign_je",
-      "words": ["je", "moi", "أنا", "انا"],
+      "words": [
+        "je",
+        "moi",
+        "أنا",
+        "انا"
+      ],
       "animation": "sign_je",
       "category": "pronouns",
       "duration": 0.8,
@@ -116,7 +169,14 @@
     },
     {
       "id": "sign_tu",
-      "words": ["tu", "toi", "vous", "أنت", "انت", "انتي"],
+      "words": [
+        "tu",
+        "toi",
+        "vous",
+        "أنت",
+        "انت",
+        "انتي"
+      ],
       "animation": "sign_tu",
       "category": "pronouns",
       "duration": 0.8,
@@ -125,7 +185,13 @@
     },
     {
       "id": "sign_il_elle",
-      "words": ["il", "elle", "lui", "هو", "هي"],
+      "words": [
+        "il",
+        "elle",
+        "lui",
+        "هو",
+        "هي"
+      ],
       "animation": "sign_il_elle",
       "category": "pronouns",
       "duration": 0.8,
@@ -134,16 +200,25 @@
     },
     {
       "id": "sign_nous",
-      "words": ["nous", "on", "احنا", "إحنا"],
+      "words": [
+        "nous",
+        "on",
+        "احنا",
+        "إحنا"
+      ],
       "animation": "sign_nous",
       "category": "pronouns",
-      "duration": 1.0,
+      "duration": 1,
       "description": "Index finger circling to include self and others",
       "difficulty": "easy"
     },
     {
       "id": "sign_nom",
-      "words": ["nom", "اسم", "إسم"],
+      "words": [
+        "nom",
+        "اسم",
+        "إسم"
+      ],
       "animation": "sign_nom",
       "category": "basics",
       "duration": 1.2,
@@ -152,25 +227,41 @@
     },
     {
       "id": "sign_quoi",
-      "words": ["quoi", "que", "qu'est-ce que", "شنو", "شنوة", "آش"],
+      "words": [
+        "quoi",
+        "que",
+        "qu'est-ce que",
+        "شنو",
+        "شنوة",
+        "آش"
+      ],
       "animation": "sign_quoi",
       "category": "questions",
-      "duration": 1.0,
+      "duration": 1,
       "description": "Palms up, shoulders shrugged",
       "difficulty": "easy"
     },
     {
       "id": "sign_ou",
-      "words": ["où", "ou", "وين", "فين"],
+      "words": [
+        "où",
+        "ou",
+        "وين",
+        "فين"
+      ],
       "animation": "sign_ou",
       "category": "questions",
-      "duration": 1.0,
+      "duration": 1,
       "description": "Index finger pointing in different directions",
       "difficulty": "easy"
     },
     {
       "id": "sign_quand",
-      "words": ["quand", "وقتاش", "إمتى"],
+      "words": [
+        "quand",
+        "وقتاش",
+        "إمتى"
+      ],
       "animation": "sign_quand",
       "category": "questions",
       "duration": 1.2,
@@ -179,7 +270,11 @@
     },
     {
       "id": "sign_pourquoi",
-      "words": ["pourquoi", "علاش", "ليش"],
+      "words": [
+        "pourquoi",
+        "علاش",
+        "ليش"
+      ],
       "animation": "sign_pourquoi",
       "category": "questions",
       "duration": 1.2,
@@ -188,7 +283,13 @@
     },
     {
       "id": "sign_aide",
-      "words": ["aide", "aider", "help", "عاوني", "مساعدة"],
+      "words": [
+        "aide",
+        "aider",
+        "help",
+        "عاوني",
+        "مساعدة"
+      ],
       "animation": "sign_aide",
       "category": "needs",
       "duration": 1.5,
@@ -197,7 +298,11 @@
     },
     {
       "id": "sign_eau",
-      "words": ["eau", "ماء", "ما"],
+      "words": [
+        "eau",
+        "ماء",
+        "ما"
+      ],
       "animation": "sign_eau",
       "category": "needs",
       "duration": 1.2,
@@ -206,7 +311,13 @@
     },
     {
       "id": "sign_manger",
-      "words": ["manger", "nourriture", "ناكل", "ماكلة", "أكل"],
+      "words": [
+        "manger",
+        "nourriture",
+        "ناكل",
+        "ماكلة",
+        "أكل"
+      ],
       "animation": "sign_manger",
       "category": "needs",
       "duration": 1.5,
@@ -215,7 +326,12 @@
     },
     {
       "id": "sign_dormir",
-      "words": ["dormir", "sommeil", "نرقد", "نوم"],
+      "words": [
+        "dormir",
+        "sommeil",
+        "نرقد",
+        "نوم"
+      ],
       "animation": "sign_dormir",
       "category": "needs",
       "duration": 1.5,
@@ -224,7 +340,12 @@
     },
     {
       "id": "sign_toilettes",
-      "words": ["toilettes", "wc", "حمام", "تواليت"],
+      "words": [
+        "toilettes",
+        "wc",
+        "حمام",
+        "تواليت"
+      ],
       "animation": "sign_toilettes",
       "category": "needs",
       "duration": 1.2,
@@ -233,7 +354,13 @@
     },
     {
       "id": "sign_docteur",
-      "words": ["docteur", "médecin", "hôpital", "طبيب", "سبيطار"],
+      "words": [
+        "docteur",
+        "médecin",
+        "hôpital",
+        "طبيب",
+        "سبيطار"
+      ],
       "animation": "sign_docteur",
       "category": "needs",
       "duration": 1.5,
@@ -242,7 +369,13 @@
     },
     {
       "id": "sign_douleur",
-      "words": ["douleur", "mal", "ça fait mal", "يوجعني", "وجع"],
+      "words": [
+        "douleur",
+        "mal",
+        "ça fait mal",
+        "يوجعني",
+        "وجع"
+      ],
       "animation": "sign_douleur",
       "category": "needs",
       "duration": 1.5,
@@ -251,7 +384,11 @@
     },
     {
       "id": "sign_famille",
-      "words": ["famille", "عائلة", "فاميليا"],
+      "words": [
+        "famille",
+        "عائلة",
+        "فاميليا"
+      ],
       "animation": "sign_famille",
       "category": "people",
       "duration": 1.5,
@@ -260,7 +397,12 @@
     },
     {
       "id": "sign_pere",
-      "words": ["père", "papa", "بابا", "أب"],
+      "words": [
+        "père",
+        "papa",
+        "بابا",
+        "أب"
+      ],
       "animation": "sign_pere",
       "category": "people",
       "duration": 1.2,
@@ -269,7 +411,12 @@
     },
     {
       "id": "sign_mere",
-      "words": ["mère", "maman", "ماما", "أم"],
+      "words": [
+        "mère",
+        "maman",
+        "ماما",
+        "أم"
+      ],
       "animation": "sign_mere",
       "category": "people",
       "duration": 1.2,
@@ -278,7 +425,12 @@
     },
     {
       "id": "sign_enfant",
-      "words": ["enfant", "bébé", "طفل", "صغير"],
+      "words": [
+        "enfant",
+        "bébé",
+        "طفل",
+        "صغير"
+      ],
       "animation": "sign_enfant",
       "category": "people",
       "duration": 1.2,
@@ -287,7 +439,12 @@
     },
     {
       "id": "sign_ami",
-      "words": ["ami", "copain", "صاحبي", "صديق"],
+      "words": [
+        "ami",
+        "copain",
+        "صاحبي",
+        "صديق"
+      ],
       "animation": "sign_ami",
       "category": "people",
       "duration": 1.2,
@@ -296,7 +453,11 @@
     },
     {
       "id": "sign_ecole",
-      "words": ["école", "مدرسة", "مكتب"],
+      "words": [
+        "école",
+        "مدرسة",
+        "مكتب"
+      ],
       "animation": "sign_ecole",
       "category": "places",
       "duration": 1.5,
@@ -305,7 +466,11 @@
     },
     {
       "id": "sign_maison",
-      "words": ["maison", "دار", "بيت"],
+      "words": [
+        "maison",
+        "دار",
+        "بيت"
+      ],
       "animation": "sign_maison",
       "category": "places",
       "duration": 1.5,
@@ -314,7 +479,12 @@
     },
     {
       "id": "sign_travail",
-      "words": ["travail", "travailler", "خدمة", "نخدم"],
+      "words": [
+        "travail",
+        "travailler",
+        "خدمة",
+        "نخدم"
+      ],
       "animation": "sign_travail",
       "category": "actions",
       "duration": 1.5,
@@ -323,7 +493,12 @@
     },
     {
       "id": "sign_apprendre",
-      "words": ["apprendre", "étudier", "نقرا", "دراسة"],
+      "words": [
+        "apprendre",
+        "étudier",
+        "نقرا",
+        "دراسة"
+      ],
       "animation": "sign_apprendre",
       "category": "actions",
       "duration": 1.5,
@@ -332,7 +507,13 @@
     },
     {
       "id": "sign_aimer",
-      "words": ["aimer", "amour", "j'aime", "نحب", "حب"],
+      "words": [
+        "aimer",
+        "amour",
+        "j'aime",
+        "نحب",
+        "حب"
+      ],
       "animation": "sign_aimer",
       "category": "emotions",
       "duration": 1.5,
@@ -341,7 +522,13 @@
     },
     {
       "id": "sign_content",
-      "words": ["content", "heureux", "joie", "فرحان", "مبسوط"],
+      "words": [
+        "content",
+        "heureux",
+        "joie",
+        "فرحان",
+        "مبسوط"
+      ],
       "animation": "sign_content",
       "category": "emotions",
       "duration": 1.5,
@@ -350,7 +537,11 @@
     },
     {
       "id": "sign_triste",
-      "words": ["triste", "حزين", "مقلق"],
+      "words": [
+        "triste",
+        "حزين",
+        "مقلق"
+      ],
       "animation": "sign_triste",
       "category": "emotions",
       "duration": 1.5,
@@ -359,7 +550,12 @@
     },
     {
       "id": "sign_peur",
-      "words": ["peur", "effrayé", "خايف", "خوف"],
+      "words": [
+        "peur",
+        "effrayé",
+        "خايف",
+        "خوف"
+      ],
       "animation": "sign_peur",
       "category": "emotions",
       "duration": 1.5,
@@ -368,7 +564,12 @@
     },
     {
       "id": "sign_comprendre",
-      "words": ["comprendre", "je comprends", "فهمت", "نفهم"],
+      "words": [
+        "comprendre",
+        "je comprends",
+        "فهمت",
+        "نفهم"
+      ],
       "animation": "sign_comprendre",
       "category": "communication",
       "duration": 1.2,
@@ -377,7 +578,12 @@
     },
     {
       "id": "sign_pas_comprendre",
-      "words": ["pas comprendre", "je ne comprends pas", "مافهمتش", "ما نفهمش"],
+      "words": [
+        "pas comprendre",
+        "je ne comprends pas",
+        "مافهمتش",
+        "ما نفهمش"
+      ],
       "animation": "sign_pas_comprendre",
       "category": "communication",
       "duration": 1.5,
@@ -386,7 +592,12 @@
     },
     {
       "id": "sign_repeter",
-      "words": ["répéter", "encore", "عاود", "إعادة"],
+      "words": [
+        "répéter",
+        "encore",
+        "عاود",
+        "إعادة"
+      ],
       "animation": "sign_repeter",
       "category": "communication",
       "duration": 1.2,
@@ -395,7 +606,12 @@
     },
     {
       "id": "sign_lentement",
-      "words": ["lentement", "doucement", "بالشوية", "شوية"],
+      "words": [
+        "lentement",
+        "doucement",
+        "بالشوية",
+        "شوية"
+      ],
       "animation": "sign_lentement",
       "category": "communication",
       "duration": 1.5,
@@ -404,7 +620,12 @@
     },
     {
       "id": "sign_attendre",
-      "words": ["attendre", "patience", "أستنى", "صبر"],
+      "words": [
+        "attendre",
+        "patience",
+        "أستنى",
+        "صبر"
+      ],
       "animation": "sign_attendre",
       "category": "actions",
       "duration": 1.5,
@@ -413,7 +634,11 @@
     },
     {
       "id": "sign_aujourd_hui",
-      "words": ["aujourd'hui", "اليوم", "اليوما"],
+      "words": [
+        "aujourd'hui",
+        "اليوم",
+        "اليوما"
+      ],
       "animation": "sign_aujourd_hui",
       "category": "time",
       "duration": 1.2,
@@ -422,7 +647,11 @@
     },
     {
       "id": "sign_demain",
-      "words": ["demain", "غدوة", "باكر"],
+      "words": [
+        "demain",
+        "غدوة",
+        "باكر"
+      ],
       "animation": "sign_demain",
       "category": "time",
       "duration": 1.2,
@@ -431,7 +660,11 @@
     },
     {
       "id": "sign_hier",
-      "words": ["hier", "البارح", "أمس"],
+      "words": [
+        "hier",
+        "البارح",
+        "أمس"
+      ],
       "animation": "sign_hier",
       "category": "time",
       "duration": 1.2,
@@ -440,7 +673,13 @@
     },
     {
       "id": "sign_argent",
-      "words": ["argent", "prix", "فلوس", "ثمن", "مال"],
+      "words": [
+        "argent",
+        "prix",
+        "فلوس",
+        "ثمن",
+        "مال"
+      ],
       "animation": "sign_argent",
       "category": "basics",
       "duration": 1.2,
@@ -449,7 +688,12 @@
     },
     {
       "id": "sign_telephone",
-      "words": ["téléphone", "appeler", "تيليفون", "يتصل"],
+      "words": [
+        "téléphone",
+        "appeler",
+        "تيليفون",
+        "يتصل"
+      ],
       "animation": "sign_telephone",
       "category": "objects",
       "duration": 1.2,
@@ -458,7 +702,13 @@
     },
     {
       "id": "sign_excusez",
-      "words": ["excusez-moi", "pardon", "désolé", "سامحني", "معليش"],
+      "words": [
+        "excusez-moi",
+        "pardon",
+        "désolé",
+        "سامحني",
+        "معليش"
+      ],
       "animation": "sign_excusez",
       "category": "politeness",
       "duration": 1.5,
@@ -467,68 +717,1977 @@
     },
     {
       "id": "sign_bienvenue",
-      "words": ["bienvenue", "مرحبا بيك"],
+      "words": [
+        "bienvenue",
+        "مرحبا بيك"
+      ],
       "animation": "sign_bienvenue",
       "category": "greetings",
       "duration": 1.8,
       "description": "Both hands opening outward from center",
       "difficulty": "easy"
+    },
+    {
+      "id": "sign_bras",
+      "words": [
+        "bras",
+        "membre supérieur",
+        "ذراع"
+      ],
+      "animation": "sign_bras",
+      "category": "medical",
+      "duration": 5,
+      "description": "Indication du bras (Vidéo)",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_cerveau",
+      "words": [
+        "cerveau",
+        "encéphale",
+        "مخ",
+        "دماغ"
+      ],
+      "animation": "sign_cerveau",
+      "category": "medical",
+      "duration": 5,
+      "description": "Indication du cerveau (Vidéo)",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_bouche",
+      "words": [
+        "bouche",
+        "lèvres",
+        "fom",
+        "phom"
+      ],
+      "animation": "sign_bouche",
+      "category": "medical",
+      "duration": 5,
+      "description": "Indication de la bouche (Vidéo)",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_1_professionnels_de_la_sante",
+      "words": [
+        "1.professionnels de la santé",
+        "1.professionnels de la sante"
+      ],
+      "animation": "video:1.professionnels de la santé.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: 1.professionnels de la santé",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_accouchement",
+      "words": [
+        "accouchement"
+      ],
+      "animation": "video:accouchement.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: accouchement",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_agent_d_accueil",
+      "words": [
+        "agent d'accueil"
+      ],
+      "animation": "video:agent d'accueil.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: agent d'accueil",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_agent_de_securite",
+      "words": [
+        "agent de sécurité",
+        "agent de securite"
+      ],
+      "animation": "video:agent de sécurité.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: agent de sécurité",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_aide_soignant",
+      "words": [
+        "aide soignant"
+      ],
+      "animation": "video:aide soignant.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: aide soignant",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_aisselle",
+      "words": [
+        "aisselle"
+      ],
+      "animation": "video:aisselle.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: aisselle",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_allergie",
+      "words": [
+        "allergie",
+        "حساسية"
+      ],
+      "animation": "video:Allergie.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: Allergie",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_analyse",
+      "words": [
+        "analyse"
+      ],
+      "animation": "video:analyse.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: analyse",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_anesthesie",
+      "words": [
+        "anesthésie",
+        "anesthesie"
+      ],
+      "animation": "video:anesthésie.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: anesthésie",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_angiologue",
+      "words": [
+        "angiologue"
+      ],
+      "animation": "video:angiologue.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: angiologue",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_assistant_e__de_service_social_",
+      "words": [
+        "assistant(e) de service social "
+      ],
+      "animation": "video:assistant(e) de service social .mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: assistant(e) de service social ",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_attention",
+      "words": [
+        "attention"
+      ],
+      "animation": "video:attention.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: attention",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_audioprothesiste",
+      "words": [
+        "audioprothésiste",
+        "audioprothesiste"
+      ],
+      "animation": "video:audioprothésiste.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: audioprothésiste",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_avortement",
+      "words": [
+        "avortement"
+      ],
+      "animation": "video:avortement.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: avortement",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_bacteries",
+      "words": [
+        "bactéries",
+        "bacteries"
+      ],
+      "animation": "video:bactéries.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: bactéries",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_bandage",
+      "words": [
+        "bandage"
+      ],
+      "animation": "video:bandage.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: bandage",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_bouche",
+      "words": [
+        "bouche",
+        "فم"
+      ],
+      "animation": "sign_bouche",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: bouche",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_bras",
+      "words": [
+        "bras",
+        "ذراع"
+      ],
+      "animation": "sign_bras",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: bras",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_brulure_d_estomac",
+      "words": [
+        "brulure d estomac",
+        "معدة"
+      ],
+      "animation": "video:brulure d estomac.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: brulure d estomac",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_bequille",
+      "words": [
+        "béquille",
+        "bequille"
+      ],
+      "animation": "video:béquille.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: béquille",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_caisse_nationale_d_assurance_maladie",
+      "words": [
+        "caisse nationale d'assurance-maladie"
+      ],
+      "animation": "video:caisse nationale d'assurance-maladie.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: caisse nationale d'assurance-maladie",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_cancer",
+      "words": [
+        "cancer",
+        "اللطف"
+      ],
+      "animation": "video:cancer.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: cancer",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_centre_medical",
+      "words": [
+        "centre médical",
+        "centre medical"
+      ],
+      "animation": "video:centre médical.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: centre médical",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_cerveau",
+      "words": [
+        "cerveau",
+        "مخ"
+      ],
+      "animation": "sign_cerveau",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: cerveau",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_cheveux",
+      "words": [
+        "cheveux",
+        "شعر"
+      ],
+      "animation": "video:cheveux.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: cheveux",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_chirurgien",
+      "words": [
+        "chirurgien"
+      ],
+      "animation": "video:Chirurgien.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: Chirurgien",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_cin",
+      "words": [
+        "cin"
+      ],
+      "animation": "video:CIN.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: CIN",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_coeur",
+      "words": [
+        "coeur",
+        "قلب"
+      ],
+      "animation": "sign_coeur",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: coeur",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_coma",
+      "words": [
+        "coma"
+      ],
+      "animation": "video:coma.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: coma",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_cou",
+      "words": [
+        "cou",
+        "رقبة"
+      ],
+      "animation": "video:cou.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: cou",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_coude",
+      "words": [
+        "coude"
+      ],
+      "animation": "video:coude.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: coude",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_covid_19",
+      "words": [
+        "covid-19"
+      ],
+      "animation": "video:COVID-19.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: COVID-19",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_cuisse",
+      "words": [
+        "cuisse"
+      ],
+      "animation": "video:cuisse.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: cuisse",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_cesarienne",
+      "words": [
+        "césarienne",
+        "cesarienne"
+      ],
+      "animation": "video:césarienne.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: césarienne",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_date_de_naissance",
+      "words": [
+        "date de naissance"
+      ],
+      "animation": "video:date de naissance.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: date de naissance",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_dentiste",
+      "words": [
+        "dentiste"
+      ],
+      "animation": "video:dentiste.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: dentiste",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_dents",
+      "words": [
+        "dents",
+        "سنين"
+      ],
+      "animation": "video:dents.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: dents",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_dermatologue",
+      "words": [
+        "dermatologue"
+      ],
+      "animation": "video:dermatologue.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: dermatologue",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_diabete",
+      "words": [
+        "diabète",
+        "diabete",
+        "سكر"
+      ],
+      "animation": "video:diabète.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: diabète",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_diarrhee",
+      "words": [
+        "diarrhée",
+        "diarrhee"
+      ],
+      "animation": "video:diarrhée.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: diarrhée",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_directeur__rice_",
+      "words": [
+        "directeur (rice)"
+      ],
+      "animation": "video:directeur (rice).mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: directeur (rice)",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_doigts",
+      "words": [
+        "doigts",
+        "صوابع"
+      ],
+      "animation": "video:doigts.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: doigts",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_dos",
+      "words": [
+        "dos",
+        "ظهر"
+      ],
+      "animation": "video:dos.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: dos",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_douleur",
+      "words": [
+        "douleur",
+        "وجيعة"
+      ],
+      "animation": "video:douleur.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: douleur",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_depression",
+      "words": [
+        "dépression",
+        "depression"
+      ],
+      "animation": "video:dépression.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: dépression",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_en_pleine_forme",
+      "words": [
+        "en pleine forme"
+      ],
+      "animation": "video:en pleine forme.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: en pleine forme",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_envanouissement",
+      "words": [
+        "envanouissement"
+      ],
+      "animation": "video:envanouissement.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: envanouissement",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_equipement_de_medical_",
+      "words": [
+        "equipement de médical'",
+        "equipement de medical'"
+      ],
+      "animation": "video:equipement de médical'.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: equipement de médical'",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_fatigue",
+      "words": [
+        "fatigué",
+        "fatigue"
+      ],
+      "animation": "video:fatigué.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: fatigué",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_fauteuil_roulant",
+      "words": [
+        "fauteuil roulant"
+      ],
+      "animation": "video:fauteuil roulant.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: fauteuil roulant",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_fesses",
+      "words": [
+        "fesses"
+      ],
+      "animation": "video:Fesses.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: Fesses",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_fievre",
+      "words": [
+        "fièvre",
+        "fievre",
+        "سخانة"
+      ],
+      "animation": "video:fièvre.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: fièvre",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_foie",
+      "words": [
+        "foie",
+        "كبدة"
+      ],
+      "animation": "video:foie.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: foie",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_gants_medicaux",
+      "words": [
+        "gants médicaux",
+        "gants medicaux"
+      ],
+      "animation": "video:gants médicaux.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: gants médicaux",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_gel_hydroalcoolique",
+      "words": [
+        "gel hydroalcoolique"
+      ],
+      "animation": "video:gel hydroalcoolique.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: gel hydroalcoolique",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_gorge",
+      "words": [
+        "gorge",
+        "قرجم"
+      ],
+      "animation": "video:Gorge.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: Gorge",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_grippe",
+      "words": [
+        "grippe",
+        "قريب"
+      ],
+      "animation": "video:grippe.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: grippe",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_gros_intestin",
+      "words": [
+        "gros intestin"
+      ],
+      "animation": "video:gros intestin.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: gros intestin",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_grossesse",
+      "words": [
+        "grossesse",
+        "حبلة"
+      ],
+      "animation": "video:grossesse.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: grossesse",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_gynecologie",
+      "words": [
+        "gynécologie",
+        "gynecologie"
+      ],
+      "animation": "video:gynécologie.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: gynécologie",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_genetique",
+      "words": [
+        "génétique",
+        "genetique"
+      ],
+      "animation": "video:génétique.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: génétique",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_handicap",
+      "words": [
+        "handicap"
+      ],
+      "animation": "video:handicap.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: handicap",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_hopital",
+      "words": [
+        "hopital",
+        "سبيطار"
+      ],
+      "animation": "sign_hopital",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: hopital",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_hypertension_elevee",
+      "words": [
+        "hypertension élevée",
+        "hypertension elevee"
+      ],
+      "animation": "video:hypertension élevée.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: hypertension élevée",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_implant_cochleaire",
+      "words": [
+        "implant cochléaire",
+        "implant cochleaire"
+      ],
+      "animation": "video:implant cochléaire.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: implant cochléaire",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_infirmier",
+      "words": [
+        "infirmier",
+        "فرملي"
+      ],
+      "animation": "video:infirmier.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: infirmier",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_information_et_",
+      "words": [
+        "information et "
+      ],
+      "animation": "video:information et .mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: information et ",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_interprete",
+      "words": [
+        "interprète",
+        "interprete"
+      ],
+      "animation": "video:interprète.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: interprète",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_intestin_grele",
+      "words": [
+        "intestin gréle",
+        "intestin grele"
+      ],
+      "animation": "video:intestin gréle.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: intestin gréle",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_jambe",
+      "words": [
+        "jambe",
+        "ساق"
+      ],
+      "animation": "video:jambe.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: jambe",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_jumeau",
+      "words": [
+        "jumeau"
+      ],
+      "animation": "video:jumeau.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: jumeau",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_kinesitherapeute",
+      "words": [
+        "kinésithérapeute",
+        "kinesitherapeute"
+      ],
+      "animation": "video:kinésithérapeute.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: kinésithérapeute",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_l_expliquation_d_avortement",
+      "words": [
+        "l'expliquation d'avortement"
+      ],
+      "animation": "video:L'expliquation d'avortement.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: L'expliquation d'avortement",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_langue_des_signes",
+      "words": [
+        "langue des signes",
+        "لسان"
+      ],
+      "animation": "video:langue des signes.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: langue des signes",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_langue",
+      "words": [
+        "langue",
+        "لسان"
+      ],
+      "animation": "video:langue.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: langue",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_main",
+      "words": [
+        "main",
+        "يد"
+      ],
+      "animation": "video:main.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: main",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_malentendant",
+      "words": [
+        "malentendant"
+      ],
+      "animation": "video:malentendant.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: malentendant",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_masque_medical",
+      "words": [
+        "masque médical",
+        "masque medical"
+      ],
+      "animation": "video:masque médical.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: masque médical",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_masque_a_oxygene",
+      "words": [
+        "masque à oxygène",
+        "masque a oxygene"
+      ],
+      "animation": "video:masque à oxygène.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: masque à oxygène",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_mensturation",
+      "words": [
+        "mensturation"
+      ],
+      "animation": "video:mensturation.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: mensturation",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_medecin_generaliste",
+      "words": [
+        "médecin généraliste",
+        "medecin generaliste",
+        "طبيب"
+      ],
+      "animation": "sign_medecin",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: médecin généraliste",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_medicament",
+      "words": [
+        "médicament",
+        "medicament",
+        "دواء"
+      ],
+      "animation": "video:médicament.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: médicament",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_nerveux",
+      "words": [
+        "nerveux"
+      ],
+      "animation": "video:nerveux.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: nerveux",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_nez",
+      "words": [
+        "nez",
+        "خشم"
+      ],
+      "animation": "video:nez.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: nez",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_nombril_1",
+      "words": [
+        "nombril 1"
+      ],
+      "animation": "video:nombril 1.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: nombril 1",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_nuque",
+      "words": [
+        "nuque"
+      ],
+      "animation": "video:nuque.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: nuque",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_nutritioniste",
+      "words": [
+        "nutritioniste"
+      ],
+      "animation": "video:nutritioniste.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: nutritioniste",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_oeils",
+      "words": [
+        "oeils",
+        "عينين"
+      ],
+      "animation": "sign_yeux",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: Oeils",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_oncologue",
+      "words": [
+        "oncologue"
+      ],
+      "animation": "video:oncologue.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: oncologue",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_operation_chirurgicale",
+      "words": [
+        "opération chirurgicale",
+        "operation chirurgicale",
+        "عملية"
+      ],
+      "animation": "video:opération chirurgicale.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: opération chirurgicale",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_ordonnance_medical",
+      "words": [
+        "ordonnance médical",
+        "ordonnance medical",
+        "وصفة"
+      ],
+      "animation": "video:ordonnance médical.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: ordonnance médical",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_oreilles",
+      "words": [
+        "oreilles",
+        "وذن"
+      ],
+      "animation": "video:Oreilles.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: Oreilles",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_orl",
+      "words": [
+        "orl"
+      ],
+      "animation": "video:ORL.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: ORL",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_orthophoniste",
+      "words": [
+        "orthophoniste"
+      ],
+      "animation": "video:orthophoniste.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: orthophoniste",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_ovaires",
+      "words": [
+        "ovaires"
+      ],
+      "animation": "video:Ovaires.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: Ovaires",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_ou_avez_vous_mal",
+      "words": [
+        "où avez vous mal",
+        "ou avez vous mal"
+      ],
+      "animation": "video:où avez vous mal.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: où avez vous mal",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_pharmacien",
+      "words": [
+        "pharmacien"
+      ],
+      "animation": "video:pharmacien.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: pharmacien",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_poids",
+      "words": [
+        "poids"
+      ],
+      "animation": "video:poids.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: poids",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_poitrine",
+      "words": [
+        "poitrine",
+        "صدر"
+      ],
+      "animation": "video:poitrine.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: poitrine",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_positif___negatif",
+      "words": [
+        "positif - négatif",
+        "positif - negatif"
+      ],
+      "animation": "video:positif - négatif.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: positif - négatif",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_poumons",
+      "words": [
+        "poumons",
+        "رواوي"
+      ],
+      "animation": "video:poumons.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: poumons",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_problemes_de_sante",
+      "words": [
+        "problèmes de santé",
+        "problemes de sante"
+      ],
+      "animation": "video:problèmes de santé.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: problèmes de santé",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_profession_administrative_en_sante",
+      "words": [
+        "profession administrative en santé",
+        "profession administrative en sante"
+      ],
+      "animation": "video:profession administrative en santé.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: profession administrative en santé",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_prenom_et_nom",
+      "words": [
+        "prénom et nom",
+        "prenom et nom"
+      ],
+      "animation": "video:prénom et nom.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: prénom et nom",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_preparateur_en_pharmacie",
+      "words": [
+        "préparateur en pharmacie",
+        "preparateur en pharmacie",
+        "فرماسية"
+      ],
+      "animation": "video:préparateur en pharmacie.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: préparateur en pharmacie",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_prevention",
+      "words": [
+        "prévention",
+        "prevention"
+      ],
+      "animation": "video:prévention.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: prévention",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_psychiatre",
+      "words": [
+        "psychiatre"
+      ],
+      "animation": "video:psychiatre.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: psychiatre",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_psychologue",
+      "words": [
+        "psychologue"
+      ],
+      "animation": "video:psychologue.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: psychologue",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_pediatre",
+      "words": [
+        "pédiatre",
+        "pediatre"
+      ],
+      "animation": "video:pédiatre.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: pédiatre",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_penis",
+      "words": [
+        "pénis",
+        "penis"
+      ],
+      "animation": "video:pénis.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: pénis",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_qu_est_ce_qui_est_passe",
+      "words": [
+        "qu'est ce qui est passé",
+        "qu'est ce qui est passe"
+      ],
+      "animation": "video:qu'est ce qui est passé.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: qu'est ce qui est passé",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_quand",
+      "words": [
+        "quand"
+      ],
+      "animation": "video:quand.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: quand",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_question_reponse",
+      "words": [
+        "question réponse",
+        "question reponse"
+      ],
+      "animation": "video:question réponse.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: question réponse",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_rdv",
+      "words": [
+        "rdv",
+        "موعد"
+      ],
+      "animation": "video:RDV.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: RDV",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_relation_sexuelle",
+      "words": [
+        "relation sexuelle"
+      ],
+      "animation": "video:relation sexuelle.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: relation sexuelle",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_responsabilite",
+      "words": [
+        "responsabilité",
+        "responsabilite"
+      ],
+      "animation": "video:responsabilité.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: responsabilité",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_rougeole",
+      "words": [
+        "rougeole"
+      ],
+      "animation": "video:rougeole.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: rougeole",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_regime_amaigrissant",
+      "words": [
+        "régime amaigrissant",
+        "regime amaigrissant"
+      ],
+      "animation": "video:régime amaigrissant.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: régime amaigrissant",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_resultat",
+      "words": [
+        "résultat",
+        "resultat"
+      ],
+      "animation": "video:résultat.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: résultat",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_sage_femme",
+      "words": [
+        "sage femme"
+      ],
+      "animation": "video:sage femme.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: sage femme",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_salle_d_accueil",
+      "words": [
+        "salle d'accueil"
+      ],
+      "animation": "video:salle d'accueil.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: salle d'accueil",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_salle_d_attente",
+      "words": [
+        "salle d'attente"
+      ],
+      "animation": "video:salle d'attente.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: salle d'attente",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_salle_de_consultation",
+      "words": [
+        "salle de consultation"
+      ],
+      "animation": "video:salle de consultation.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: salle de consultation",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_salle_de_laboratoire",
+      "words": [
+        "salle de laboratoire"
+      ],
+      "animation": "video:salle de laboratoire.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: salle de laboratoire",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_salle_de_radiographie",
+      "words": [
+        "salle de radiographie"
+      ],
+      "animation": "video:salle de radiographie.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: salle de radiographie",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_salle_de_radiologie",
+      "words": [
+        "salle de radiologie"
+      ],
+      "animation": "video:salle de radiologie.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: salle de radiologie",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_salle_pretevement_sanguin",
+      "words": [
+        "salle prétevement sanguin",
+        "salle pretevement sanguin"
+      ],
+      "animation": "video:salle prétevement sanguin.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: salle prétevement sanguin",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_salut_ca_va_",
+      "words": [
+        "salut ça va ",
+        "salut ca va "
+      ],
+      "animation": "video:salut ça va .mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: salut ça va ",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_sante",
+      "words": [
+        "sante"
+      ],
+      "animation": "video:sante.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: sante",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_secretaire",
+      "words": [
+        "secrétaire",
+        "secretaire"
+      ],
+      "animation": "video:secrétaire.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: secrétaire",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_seins",
+      "words": [
+        "seins"
+      ],
+      "animation": "video:Seins.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: Seins",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_sida",
+      "words": [
+        "sida"
+      ],
+      "animation": "video:sida.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: sida",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_solution",
+      "words": [
+        "solution"
+      ],
+      "animation": "video:solution.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: solution",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_sourcils",
+      "words": [
+        "sourcils"
+      ],
+      "animation": "video:sourcils.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: sourcils",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_sourd",
+      "words": [
+        "sourd"
+      ],
+      "animation": "video:sourd.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: sourd",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_stress",
+      "words": [
+        "stress"
+      ],
+      "animation": "video:stress.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: stress",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_taille",
+      "words": [
+        "taille"
+      ],
+      "animation": "video:taille.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: taille",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_technicien_de_laboratoire",
+      "words": [
+        "technicien de laboratoire"
+      ],
+      "animation": "video:technicien de laboratoire.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: technicien de laboratoire",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_tensiometre",
+      "words": [
+        "tensiomètre",
+        "tensiometre"
+      ],
+      "animation": "video:tensiomètre.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: tensiomètre",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_thermometre",
+      "words": [
+        "thermomètre",
+        "thermometre"
+      ],
+      "animation": "video:thermomètre.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: thermomètre",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_thyroide",
+      "words": [
+        "thyroide"
+      ],
+      "animation": "video:thyroide.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: thyroide",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_tomodensitometrie",
+      "words": [
+        "tomodensitométrie",
+        "tomodensitometrie"
+      ],
+      "animation": "video:tomodensitométrie.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: tomodensitométrie",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_tete",
+      "words": [
+        "téte",
+        "tete",
+        "رأس"
+      ],
+      "animation": "sign_tete",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: téte",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_uterus",
+      "words": [
+        "utérus",
+        "uterus"
+      ],
+      "animation": "video:utérus.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: utérus",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_vaccin",
+      "words": [
+        "vaccin"
+      ],
+      "animation": "sign_vaccin",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: vaccin",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_vagin",
+      "words": [
+        "vagin"
+      ],
+      "animation": "video:vagin.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: vagin",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_ventre",
+      "words": [
+        "ventre",
+        "كرش"
+      ],
+      "animation": "sign_ventre",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: ventre",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_vertige",
+      "words": [
+        "vertige"
+      ],
+      "animation": "video:vertige.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: vertige",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_vessie",
+      "words": [
+        "vessie"
+      ],
+      "animation": "video:vessie.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: vessie",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_virus",
+      "words": [
+        "virus"
+      ],
+      "animation": "video:virus.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: virus",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_visage",
+      "words": [
+        "visage",
+        "وجه"
+      ],
+      "animation": "video:Visage.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: Visage",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_vitamine",
+      "words": [
+        "vitamine"
+      ],
+      "animation": "video:vitamine.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: vitamine",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_vomissement",
+      "words": [
+        "vomissement"
+      ],
+      "animation": "video:vomissement.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: vomissement",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_vulve",
+      "words": [
+        "vulve"
+      ],
+      "animation": "video:vulve.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: vulve",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_echographie",
+      "words": [
+        "échographie",
+        "echographie"
+      ],
+      "animation": "video:échographie.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: échographie",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_epaule",
+      "words": [
+        "épaule",
+        "epaule",
+        "كتف"
+      ],
+      "animation": "video:épaule.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: épaule",
+      "difficulty": "medium"
+    },
+    {
+      "id": "sign_med_evaluation",
+      "words": [
+        "évaluation",
+        "evaluation"
+      ],
+      "animation": "video:évaluation.mp4",
+      "category": "medical",
+      "duration": 4,
+      "description": "Vidéo: évaluation",
+      "difficulty": "medium"
     }
   ],
   "phrases": [
     {
       "id": "phrase_comment_tu_appelles",
       "phrase": "comment tu t'appelles",
-      "alternates": ["c'est quoi ton nom", "شنو إسمك", "كيفاش إسمك"],
-      "signs": ["sign_tu", "sign_nom", "sign_quoi"],
-      "duration": 3.0,
+      "alternates": [
+        "c'est quoi ton nom",
+        "شنو إسمك",
+        "كيفاش إسمك"
+      ],
+      "signs": [
+        "sign_tu",
+        "sign_nom",
+        "sign_quoi"
+      ],
+      "duration": 3,
       "description": "YOU + NAME + WHAT"
     },
     {
       "id": "phrase_je_t_aime",
       "phrase": "je t'aime",
-      "alternates": ["نحبك"],
-      "signs": ["sign_je", "sign_aimer", "sign_tu"],
-      "duration": 3.0,
+      "alternates": [
+        "نحبك"
+      ],
+      "signs": [
+        "sign_je",
+        "sign_aimer",
+        "sign_tu"
+      ],
+      "duration": 3,
       "description": "I + LOVE + YOU"
     },
     {
       "id": "phrase_j_ai_besoin_aide",
       "phrase": "j'ai besoin d'aide",
-      "alternates": ["aide-moi", "عاوني", "نحتاج مساعدة"],
-      "signs": ["sign_je", "sign_aide"],
+      "alternates": [
+        "aide-moi",
+        "عاوني",
+        "نحتاج مساعدة"
+      ],
+      "signs": [
+        "sign_je",
+        "sign_aide"
+      ],
       "duration": 2.5,
       "description": "I + HELP"
     },
     {
       "id": "phrase_ca_va_bien",
       "phrase": "ça va bien",
-      "alternates": ["je vais bien", "لاباس الحمد لله", "أنا باهي"],
-      "signs": ["sign_ca_va", "sign_bien"],
+      "alternates": [
+        "je vais bien",
+        "لاباس الحمد لله",
+        "أنا باهي"
+      ],
+      "signs": [
+        "sign_ca_va",
+        "sign_bien"
+      ],
       "duration": 2.5,
       "description": "HOW-ARE-YOU + GOOD"
     },
     {
       "id": "phrase_ou_est",
       "phrase": "où est",
-      "alternates": ["وين", "فين هو"],
-      "signs": ["sign_ou"],
+      "alternates": [
+        "وين",
+        "فين هو"
+      ],
+      "signs": [
+        "sign_ou"
+      ],
       "duration": 1.5,
       "description": "WHERE"
     },
     {
       "id": "phrase_j_ai_faim",
       "phrase": "j'ai faim",
-      "alternates": ["فيا الجوع", "جوعان"],
-      "signs": ["sign_je", "sign_manger"],
+      "alternates": [
+        "فيا الجوع",
+        "جوعان"
+      ],
+      "signs": [
+        "sign_je",
+        "sign_manger"
+      ],
       "duration": 2.5,
       "description": "I + EAT"
     },
     {
       "id": "phrase_j_ai_soif",
       "phrase": "j'ai soif",
-      "alternates": ["فيا العطش", "عطشان"],
-      "signs": ["sign_je", "sign_eau"],
+      "alternates": [
+        "فيا العطش",
+        "عطشان"
+      ],
+      "signs": [
+        "sign_je",
+        "sign_eau"
+      ],
       "duration": 2.5,
       "description": "I + WATER"
     }

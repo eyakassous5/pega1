@@ -24,6 +24,8 @@ function LoadingFallback() {
 }
 
 function AvatarScene({ currentSign, isAnimating }) {
+  // Video playback removed - returning to full 3D avatar mode
+  
   return (
     <div className="avatar-scene" style={{ position: 'relative' }}>
       <Suspense fallback={<LoadingFallback />}>
